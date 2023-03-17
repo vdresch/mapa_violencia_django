@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Example Layout</title>
+	<style>
+		/* Basic styles for the layout */
+		body {
+			margin: 0;
+			padding: 0;
+			display: flex;
+		}
+
+		nav {
+			background-color: #333;
+			color: #fff;
+			flex: 0 0 200px; /* Fixed width for the nav bar */
+			height: 100vh; /* Set the height to the viewport height */
+			padding: 20px;
+		}
+
+		main {
+			flex: 1; /* Take up remaining space */
+			display: flex;
+			flex-direction: column;
+		}
+
+		.content {
+			flex: 1; /* Take up equal space */
+			padding: 20px;
+		}
+
+		.content:nth-child(odd) {
+			background-color: #eee;
+		}
+	</style>
+</head>
+<body>
+	<nav>
+		<ul>
+			<li><a href="#">Link 1</a></li>
+			<li><a href="#">Link 2</a></li>
+			<li><a href="#">Link 3</a></li>
+			<li><a href="#">Link 4</a></li>
+			<li><a href="#">Link 5</a></li>
+		</ul>
+	</nav>
+	<main>
+		<div class="content">
+			<h2>Block 1</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tristique est vel ante vulputate, eget pharetra sapien vestibulum. Maecenas pulvinar elementum nunc a tempor.</p>
+		</div>
+		<div class="content">
+			<h2>Block 2</h2>
+			<p>Donec fringilla, orci vel eleifend dignissim, lorem mi aliquet nunc, eget euismod magna sapien nec nisi. Vestibulum facilisis erat a elit consequat semper. </p>
+		</div>
+	</main>
+</body>
+</html>
