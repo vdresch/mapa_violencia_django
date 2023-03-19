@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Example Layout</title>
+	<title>Example Layout with Ads Space</title>
 	<style>
 		/* Basic styles for the layout */
 		body {
@@ -32,6 +32,12 @@
 		.content:nth-child(odd) {
 			background-color: #eee;
 		}
+
+		.ads {
+			flex: 0 0 100px; /* Fixed width for ads */
+			background-color: #ccc;
+			padding: 20px;
+		}
 	</style>
 </head>
 <body>
@@ -53,6 +59,10 @@
 			<h2>Block 2</h2>
 			<p>Donec fringilla, orci vel eleifend dignissim, lorem mi aliquet nunc, eget euismod magna sapien nec nisi. Vestibulum facilisis erat a elit consequat semper. </p>
 		</div>
-	</main>
+  </main>
+  <div class="ads">
+    <h2>Ads</h2>
+    <p>Here's where you can put your ads.</p>
+  </div>
 </body>
 </html>
