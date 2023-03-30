@@ -42,18 +42,33 @@
 </head>
 <body>
 	<nav>
-		<ul>
-			<li><a href="#">Link 1</a></li>
-			<li><a href="#">Link 2</a></li>
-			<li><a href="#">Link 3</a></li>
-			<li><a href="#">Link 4</a></li>
-			<li><a href="#">Link 5</a></li>
-		</ul>
+		<div>
+			<h1 style="text-align: center;">Título</h1>
+		</div>
+		<div>
+			<form id="vote_form" action="{% url 'mapa_violencia:mapa' %}" method="post">
+			{% csrf_token %}
+			<fieldset>
+				<input type="radio" id="all" name="tipo_crime" value="all" {% if tipo_crime == 'all' %} checked {% endif %}>
+				<label for="huey">Todos os crimes</label> <br>
+				<input type="radio" id="violent" name="tipo_crime" value="violent" {% if tipo_crime == 'violent' %} checked {% endif %}>
+				<label for="huey">Crimes violentos</label> <br>
+				<input type="radio" id="not_violent" name="tipo_crime" value="not_violent" {% if tipo_crime == 'not_violent' %} checked {% endif %}>
+				<label for="huey">Crimes não violentos</label>
+			</fieldset>
+			</form>
+			
+			<script>
+				document.getElementById('vote_form').addEventListener('change', function (e) {
+					document.getElementById('vote_form').submit();
+				});
+			</script>
+		
+		</div>
 	</nav>
-	<main>
+  <main>
 		<div class="content">
-			<h2>Block 1</h2>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tristique est vel ante vulputate, eget pharetra sapien vestibulum. Maecenas pulvinar elementum nunc a tempor.</p>
+			<div id="map">{{ map_html|safe }}</div>
 		</div>
 		<div class="content">
 			<h2>Block 2</h2>
