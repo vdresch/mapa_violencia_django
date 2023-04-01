@@ -20,4 +20,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('mapa/', include('mapa.urls')),
     path('sobre/', include('metodologia.urls')),
+    path("select2/", include("django_select2.urls")),
 ]

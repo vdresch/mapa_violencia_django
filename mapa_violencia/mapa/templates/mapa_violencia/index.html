@@ -55,14 +55,13 @@
 				<label for="huey">Crimes violentos</label> <br>
 				<input type="radio" id="not_violent" name="tipo_crime" value="not_violent" {% if tipo_crime == 'not_violent' %} checked {% endif %}>
 				<label for="huey">Crimes não violentos</label>
+				<select name="tipo_crime" class="selectpicker" multiple data-live-search="true">
+					{% for i in lista_crimes %}
+						<option values= {{ i }}> {{ i }} </option>
+					{% endfor %}
+				</select>
 			</fieldset>
 			</form>
-			
-			<script>
-				document.getElementById('vote_form').addEventListener('change', function (e) {
-					document.getElementById('vote_form').submit();
-				});
-			</script>
 		
 		</div>
 	</nav>
@@ -79,5 +78,17 @@
     <h2>Ads</h2>
     <p>Here's where you can put your ads.</p>
   </div>
+
+{{ form.media.js }}
+<script>
+	document.getElementById('vote_form').addEventListener('change', function (e) {
+		console.log(document.getElementById('vote_form'));
+	});
+</script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 </body>
 </html>
