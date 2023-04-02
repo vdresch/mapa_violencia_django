@@ -46,16 +46,16 @@
 			<h1 style="text-align: center;">Título</h1>
 		</div>
 		<div>
-			<form id="vote_form" action="{% url 'mapa_violencia:mapa' %}" method="post">
+			<form id="vote_form">
 			{% csrf_token %}
 			<fieldset>
-				<input type="radio" id="all" name="tipo_crime" value="all" {% if tipo_crime == 'all' %} checked {% endif %}>
+				<input type="radio" id="all" name="tipo_crime" value="all" checked>
 				<label for="huey">Todos os crimes</label> <br>
-				<input type="radio" id="violent" name="tipo_crime" value="violent" {% if tipo_crime == 'violent' %} checked {% endif %}>
+				<input type="radio" id="violent" name="tipo_crime" value="violent">
 				<label for="huey">Crimes violentos</label> <br>
-				<input type="radio" id="not_violent" name="tipo_crime" value="not_violent" {% if tipo_crime == 'not_violent' %} checked {% endif %}>
+				<input type="radio" id="not_violent" name="tipo_crime" value="not_violent">
 				<label for="huey">Crimes não violentos</label>
-				<select name="tipo_crime" class="selectpicker" multiple data-live-search="true">
+				<select id="select_crimes" name="tipo_crime" class="selectpicker" multiple data-live-search="true">
 					{% for i in lista_crimes %}
 						<option values= {{ i }}> {{ i }} </option>
 					{% endfor %}
@@ -83,6 +83,16 @@
 <script>
 	document.getElementById('vote_form').addEventListener('change', function (e) {
 		console.log(document.getElementById('vote_form'));
+		if($('#select_crimes').val()) {
+			document.getElementById('all').checked = false;
+			document.getElementById('violent').checked = false;
+			document.getElementById('not_violent').checked = false;
+		}
+		else {
+			if (!document.getElementById('all').checked && !document.getElementById('violent').checked && !document.getElementById('not_violent').checked) {
+				document.getElementById('all').checked = true;
+			}
+		}
 	});
 </script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
