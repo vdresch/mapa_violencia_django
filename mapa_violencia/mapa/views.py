@@ -16,5 +16,8 @@ def mapa(request):
     map_html = m._repr_html_()
 
     lista_crimes = ['Teste1', 'Teste2', 'Teste3']
+    lista_bairros = ['Teste1', 'Teste2', 'Teste3']
 
-    return render(request, 'mapa_violencia/index.html', {'map_html': map_html, 'lista_crimes': lista_crimes})
+    context = {'map_html': map_html, 'lista_crimes': lista_crimes, 'lista_bairros': lista_bairros}
+
+    return render(request, 'mapa_violencia/index.html', context)
