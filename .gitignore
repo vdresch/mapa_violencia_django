@@ -1,0 +1,6 @@
+*.ipynb
+mapa_violencia/scripts/data
+mapa_violencia/scripts/shapesbairros2016
+mapa_violencia/db.sqlite3
+mapa_violencia/mapa/migrations
+mapa_violencia/mapa/__pycache__
