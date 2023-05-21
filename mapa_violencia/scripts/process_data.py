@@ -50,7 +50,7 @@ def process():
 
 
     #Open shapefile containing neighborhoods names
-    porto_alegre = fiona.open("mapa_violencia/scripts/shapesbairros2016/Bairros_2016.shp")
+    porto_alegre = fiona.open("mapa_violencia/resources/shapesbairros2016/Bairros_2016.shp")
 
     bairros = list()
 
@@ -77,7 +77,7 @@ def process():
 
     #Now, let's process the metadata
     #Opens table
-    bairros_metadata = pd.read_csv('mapa_violencia/scripts/shapesbairros2016/Lista_de_bairros_de_Porto_Alegre_1.csv')
+    bairros_metadata = pd.read_csv('mapa_violencia/resources/shapesbairros2016/Lista_de_bairros_de_Porto_Alegre_1.csv')
 
     #Same process to fina closest names
     bairros_metadata['Bairro'] = bairros_metadata['Bairro'].apply(lambda x: x.upper())

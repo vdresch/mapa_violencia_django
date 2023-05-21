@@ -12,12 +12,15 @@ locale.setlocale(locale.LC_ALL, 'pt_pt.UTF-8')
 process()
 
 def run():
+    #Open the files
     processed_data = pd.read_pickle('scripts/data/processed_data.pkl')
     bairros_metadata = pd.read_pickle('scripts/data/bairros_metadata.pkl')
 
+    #Clear the db
     Crime.objects.all().delete()
     Bairro.objects.all().delete()
 
+    #Some processing and cleaning
     bairros_metadata['Área'] = bairros_metadata['Área'].apply(lambda x: re.findall('\d+\.?\d*', x)[0] if pd.notna(x) else np.nan)
     bairros_metadata['Densidade'] = bairros_metadata['Densidade'].apply(lambda x: re.findall('\d+\.?\d*', x)[0] if pd.notna(x) else np.nan)
     bairros_metadata['Renda média por \ndomicílio'] = bairros_metadata['Renda média por \ndomicílio'].apply(lambda x: re.findall('\d+\.?\d*', x)[0] if pd.notna(x) else np.nan)
@@ -27,8 +30,8 @@ def run():
 
     bairros_metadata = bairros_metadata.fillna(0)
 
+    #Feeds the neighborhoods db
     i = 1
-
     for row in bairros_metadata.iterrows():
         print(i, " de ", len(bairros_metadata))
         i += 1
@@ -42,11 +45,12 @@ def run():
             )
 
 
+    #Some processing and cleaning
     processed_data['Data Fato'] = processed_data['Data Fato'].apply(lambda x: datetime.datetime.strptime(x, '%d/%m/%Y'))
     processed_data['Hora Fato'] = processed_data['Hora Fato'].apply(lambda x: datetime.datetime.strptime(x, '%H:%M:%S'))
 
+    #Feeds the neighborhoods db
     i = 1
-
     for row in processed_data.iterrows():
         print(i, " de ", len(processed_data))
         i += 1

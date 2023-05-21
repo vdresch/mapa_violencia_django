@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	{% load static %}
 	<title>Example Layout with Ads Space</title>
 	<style>
 		/* Basic styles for the layout */
@@ -14,7 +15,7 @@
 			background-color: #333;
 			color: #fff;
 			flex: 0 0 200px; /* Fixed width for the nav bar */
-			height: 100vh; /* Set the height to the viewport height */
+			bottom: 0;
 			padding: 20px;
 		}
 
@@ -34,7 +35,7 @@
 		}
 
 		.ads {
-			flex: 0 0 100px; /* Fixed width for ads */
+			flex: 0 0 150px; /* Fixed width for ads */
 			background-color: #ccc;
 			padding: 20px;
 		}
@@ -79,8 +80,9 @@
 		</div>
 	</nav>
   <main>
+<!-- Mapa -->
 		<div class="content">
-			<div id="map">{{ map_html|safe }}</div>
+			<div id="map", style="height: 500px; position: relative; outline-style: none;"></div>
 		</div>
 		<div class="content">
 			<h2>Block 2</h2>
@@ -93,6 +95,7 @@
   </div>
 
 {{ form.media.js }}
+<!-- Crime selector -->
 <script>
 	document.getElementById('select_crimes').addEventListener('change', function (e) {
 		if($('#select_crimes').val()) {
@@ -129,6 +132,7 @@
 		console.log(document.getElementById('form_crimes'));
 	});
 </script>
+<!-- Neighhborhood selector -->
 <script>
 	document.getElementById('select_neighborhoods').addEventListener('change', function (e) {
 
@@ -151,6 +155,13 @@
 	});
 </script>
 
+<!-- Leaflet map -->
+<link rel="stylesheet" type="text/css" href="{% static 'leaflet/leaflet.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
+<script type="text/javascript" src="{% static 'leaflet/leaflet.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+<script src="{% static 'build_map.js' %}"></script>
+<!-- Ajax and bootstap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
