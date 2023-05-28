@@ -3,6 +3,18 @@ var map = L.map('map', {zoomSnap: 0.1}).setView([-30.096859, -51.152677], 10.6);
 //Neighborhoods shape
 var porto_alegre = JSON.parse(JSON.parse(document.getElementById('geojson').textContent));
 
+//Filter only seleced neighborhoods
+var teste = $.ajax({
+    url: "return_filters/", // if you don't have dynamic url,
+    type: 'GET',
+  });
+
+console.log(teste)
+
+function neighborhoods_filter(feature) {
+    if (feature.properties.Name === "AGRONOMIA") return true
+  }
+
 console.log(porto_alegre)
 
 function onEachFeature(feature, layer) {
@@ -11,9 +23,31 @@ function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.popupContent) {
         layer.bindPopup(feature.properties.popupContent);
     }
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+    });
 }
 
-L.geoJSON(porto_alegre, {
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    layer.bringToFront();
+}
+
+function resetHighlight(e) {
+    geojson.resetStyle(e.target);
+}
+
+geojson = L.geoJSON(porto_alegre, {
+    filter: neighborhoods_filter,
     onEachFeature: onEachFeature
 }).addTo(map);
 
@@ -21,34 +55,3 @@ L.geoJSON(porto_alegre, {
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
-
-
-//Draw
-// var drawnItems = new L.FeatureGroup();
-// map.addLayer(drawnItems);
-
-// var drawControl = new L.Control.Draw({
-//     // position: 'topright',
-//     draw: {
-//        polygon: {
-//         shapeOptions: {
-//          color: 'purple'
-//         },
-//         allowIntersection: true,
-//         drawError: {
-//          color: 'orange',
-//          timeout: 1000
-//         },
-//        },
-//        polyline: {},
-//        rect: {},
-//        circle: {},
-//     },
-    
-// });
-// map.addControl(drawControl);
-//  map.on('draw:created', function (e) {
-//        var type = e.layerType,
-//            layer = e.layer;
-//        drawnItems.addLayer(layer);
-// });

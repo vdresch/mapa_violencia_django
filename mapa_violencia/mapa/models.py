@@ -18,3 +18,4 @@ class Bairro(models.Model):
     population = models.DecimalField(max_digits=7, decimal_places=2)
     density = models.DecimalField(max_digits=7, decimal_places=2)
     income = models.DecimalField(max_digits=7, decimal_places=2)
+    geometry = models.JSONField(null=True)

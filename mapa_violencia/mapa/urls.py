@@ -19,4 +19,5 @@ from . import views
 app_name = 'mapa_violencia'
 urlpatterns = [
     path("", views.mapa, name='mapa'),
+    path("return_filters/", views.return_filters, name='return_filters'),
 ]
