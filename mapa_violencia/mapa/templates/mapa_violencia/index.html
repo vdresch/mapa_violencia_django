@@ -3,6 +3,8 @@
 <head>
 	{% load static %}
 	<title>Example Layout with Ads Space</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 	<style>
 		/* Basic styles for the layout */
 		body {
@@ -132,33 +134,9 @@
 		console.log(document.getElementById('form_crimes'));
 	});
 </script>
-<!-- Neighhborhood selector -->
-<script>
-	document.getElementById('select_neighborhoods').addEventListener('change', function (e) {
-
-		if($('#select_neighborhoods').val()) {
-			document.getElementById('all_bairros').checked = false;
-		}
-		else {
-			if (!document.getElementById('all_bairros').checked) {
-				document.getElementById('all_bairros').checked = true;
-			}
-		}
-		console.log(document.getElementById('form_neighborhoods'));
-	});
-	document.getElementById('all_bairros').addEventListener('change', function (e) {
-		document.getElementById('all_bairros').checked = true;
-		if($('#select_neighborhoods').val()) {
-			$('#select_neighborhoods').selectpicker('deselectAll');
-		}
-		console.log(document.getElementById('form_crimes'));
-	});
-</script>
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Ajax and bootstap -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 <!-- Leaflet map -->
@@ -169,5 +147,29 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
 {{ geojson|json_script:"geojson" }}
 <script src="{% static 'build_map.js' %}"></script>
+<!-- Neighhborhood selector -->
+<script>
+	var filtro_bairros = ["All"];
+	document.getElementById('select_neighborhoods').addEventListener('change', function (e) {
+		if($('#select_neighborhoods').val()) {
+			document.getElementById('all_bairros').checked = false;
+			filtro_bairros = $('#select_neighborhoods').val();
+			create_map(filtro_bairros)
+		}
+		else {
+			if (!document.getElementById('all_bairros').checked) {
+				document.getElementById('all_bairros').checked = true;
+				create_map(filtro_bairros)
+			}
+		}
+	});
+	document.getElementById('all_bairros').addEventListener('change', function (e) {
+		document.getElementById('all_bairros').checked = true;
+		if($('#select_neighborhoods').val()) {
+			$('#select_neighborhoods').selectpicker('deselectAll');
+			create_map(filtro_bairros)
+		}
+	});
+</script>
 </body>
 </html>

@@ -12,13 +12,21 @@ def mapa(request):
     return render(request, 'mapa_violencia/index.html', context)
 
 # Called by the js module that builds the leaflet map
+from django.http import JsonResponse
+
 def return_filters(request):
 
-    all_entries = Bairro.objects.all()
-    #print(all_entries.values())    
+    print(request.POST.getlist('filtro_bairros[]', None))
+
+    filtro_mapa = request.POST.getlist('filtro_bairros', None)
+
+    if filtro_mapa == 'All' or filtro_mapa == None:
+        bairros_mapa = Bairro.objects.all()
+    else:
+        bairros_mapa = Bairro.objects.all()#Bairro.objects.filter(bairro__in=filtro_mapa) 
 
     # Process the request and prepare the response
     response_data = {
-        'lista_bairros': list(all_entries.values()),
+        'lista_bairros': list(bairros_mapa.values()),
     }
     return JsonResponse(response_data)

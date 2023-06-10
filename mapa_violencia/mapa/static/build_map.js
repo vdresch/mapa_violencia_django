@@ -1,5 +1,23 @@
 var map = L.map('map', {zoomSnap: 0.1}).setView([-30.096859, -51.152677], 10.6);
 
+    //Layer
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+function getData(filtro_bairros) { 
+    return $.ajax({
+        type: 'POST',
+        url: "return_filters/",
+        credentials: "same-origin",
+        headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val(),
+        },
+        data: {'filtro_bairros': filtro_bairros},
+    });    
+};
+
 function onEachFeature(feature, layer) {
     layer.on({
         mouseover: highlightFeature,
@@ -33,16 +51,9 @@ function concatGeoJSON(g1, g2){
 
 //Get selected neighborhoods
 
-function getData() { 
-    return $.ajax({
-      url: "return_filters",
-      type: 'GET',
-    });
-  };
-
-async function getNeighborhoods() {
+async function getNeighborhoods(filtro_bairros) {
     try {
-        var neighborhods = await getData();
+        var neighborhods = await getData(filtro_bairros);
 
         var g1 = { "type" : "FeatureCollection",
         "features" : []};
@@ -52,26 +63,19 @@ async function getNeighborhoods() {
             g1 = concatGeoJSON(g1, neighborhods.lista_bairros[i].geometry);
         }
 
-        console.log(g1)
-
         geojson = L.geoJSON(g1, {
             //filter: neighborhoods_filter,
             onEachFeature: onEachFeature
         }).addTo(map);
-      
+    
     } catch(err) {
-      console.log(err);
+    console.log(err);
     }
-  }
+}
 
-getNeighborhoods();
+function create_map(filtro_bairros){
 
+    getNeighborhoods(filtro_bairros);
+}
 
-function neighborhoods_filter(feature) {
-    if (feature.properties.Name === "AGRONOMIA") return true
-  }
-
-//Layer
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+create_map(['All'])
