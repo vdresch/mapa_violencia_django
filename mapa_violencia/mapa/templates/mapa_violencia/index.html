@@ -97,43 +97,6 @@
   </div>
 
 {{ form.media.js }}
-<!-- Crime selector -->
-<script>
-	document.getElementById('select_crimes').addEventListener('change', function (e) {
-		if($('#select_crimes').val()) {
-			document.getElementById('all').checked = false;
-			document.getElementById('violent').checked = false;
-			document.getElementById('not_violent').checked = false;
-		}
-		else {
-			if (!document.getElementById('all').checked && !document.getElementById('violent').checked && !document.getElementById('not_violent').checked) {
-				document.getElementById('all').checked = true;
-			}
-		}
-		console.log(document.getElementById('form_crimes'));
-	});
-	document.getElementById('all').addEventListener('change', function (e) {
-		document.getElementById('all').checked = true;
-		if($('#select_crimes').val()) {
-			$('#select_crimes').selectpicker('deselectAll');
-		}
-		console.log(document.getElementById('form_crimes'));
-	});
-	document.getElementById('violent').addEventListener('change', function (e) {
-		document.getElementById('violent').checked = true;
-		if($('#select_crimes').val()) {
-			$('#select_crimes').selectpicker('deselectAll');
-		}
-		console.log(document.getElementById('form_crimes'));
-	});
-	document.getElementById('not_violent').addEventListener('change', function (e) {
-		document.getElementById('not_violent').checked = true;
-		if($('#select_crimes').val()) {
-			$('#select_crimes').selectpicker('deselectAll');
-		}
-		console.log(document.getElementById('form_crimes'));
-	});
-</script>
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Ajax and bootstap -->
@@ -149,17 +112,30 @@
 <script src="{% static 'build_map.js' %}"></script>
 <!-- Neighhborhood selector -->
 <script>
+	var filtro_crimes = ['all'];
 	document.getElementById('select_neighborhoods').addEventListener('change', function (e) {
 		if($('#select_neighborhoods').val()) {
 			document.getElementById('all_bairros').checked = false;
-			filtro_bairros = $('#select_neighborhoods').val();
-			create_map(filtro_bairros)
+			var filtro_bairros = $('#select_neighborhoods').val();
+			if($('#select_crimes').val()) {
+				var filtro_crimes = $('#select_crimes').val();
+			}
+			else{
+				var filtro_crimes = [$('input[name=tipo_crime]:checked', '#form_crimes').val()];
+			}
+			create_map(filtro_bairros, filtro_crimes);
 		}
 		else {
 			if (!document.getElementById('all_bairros').checked) {
 				document.getElementById('all_bairros').checked = true;
 				var filtro_bairros = ["All"];
-				create_map(filtro_bairros)
+				if($('#select_crimes').val()) {
+					var filtro_crimes = $('#select_crimes').val();
+				}
+				else{
+					var filtro_crimes = [$('input[name=tipo_crime]:checked', '#form_crimes').val()];
+				}
+				create_map(filtro_bairros, filtro_crimes);
 			}
 		}
 	});
@@ -169,7 +145,49 @@
 		if($('#select_neighborhoods').val()) {
 			$('#select_neighborhoods').selectpicker('deselectAll');
 		}
-		create_map(filtro_bairros)
+		if($('#select_crimes').val()) {
+			var filtro_crimes = $('#select_crimes').val();
+		}
+		else{
+			var filtro_crimes = [$('input[name=tipo_crime]:checked', '#form_crimes').val()];
+		}
+		create_map(filtro_bairros, filtro_crimes);
+	});
+</script>
+<!-- Crime selector -->
+<script>
+	//Test change on the crimes list
+	document.getElementById('select_crimes').addEventListener('change', function (e) {
+		//If there is something on the list, uncheck all alternatives
+		if($('#select_crimes').val()) {
+			document.getElementById('all').checked = false;
+			document.getElementById('violent').checked = false;
+			document.getElementById('not_violent').checked = false;
+		}
+		//Else, check All crimes
+		else {
+			if (!document.getElementById('all').checked && !document.getElementById('violent').checked && !document.getElementById('not_violent').checked) {
+				document.getElementById('all').checked = true;
+			}
+		}
+	});
+	document.getElementById('all').addEventListener('change', function (e) {
+		document.getElementById('all').checked = true;
+		if($('#select_crimes').val()) {
+			$('#select_crimes').selectpicker('deselectAll');
+		}
+	});
+	document.getElementById('violent').addEventListener('change', function (e) {
+		document.getElementById('violent').checked = true;
+		if($('#select_crimes').val()) {
+			$('#select_crimes').selectpicker('deselectAll');
+		}
+	});
+	document.getElementById('not_violent').addEventListener('change', function (e) {
+		document.getElementById('not_violent').checked = true;
+		if($('#select_crimes').val()) {
+			$('#select_crimes').selectpicker('deselectAll');
+		}
 	});
 </script>
 </body>

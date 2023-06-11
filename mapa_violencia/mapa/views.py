@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from mapa.models import Bairro
+from mapa.models import Bairro, Crime
 
 def mapa(request):
 
-    lista_crimes = ['Teste1', 'Teste2', 'Teste3']
+    lista_crimes = list(Crime.objects.values_list('enquadramento', flat=True).distinct())
     lista_bairros = list(Bairro.objects.values_list('bairro', flat=True).all())
 
     context = {'lista_crimes': lista_crimes, 'lista_bairros': lista_bairros}
@@ -17,14 +17,19 @@ from django.http import JsonResponse
 def return_filters(request):
 
     print(request.POST.getlist('filtro_bairros[]', None))
+    print(request.POST.getlist('filtro_crimes[]', None))
 
-    filtro_mapa = request.POST.getlist('filtro_bairros[]', None)
+    filtro_bairros = request.POST.getlist('filtro_bairros[]', None)
+    filtro_crimes = request.POST.getlist('filtro_crimes[]', None)
 
-    if filtro_mapa == ['All'] or filtro_mapa == None:
+    if filtro_bairros == ['All'] or filtro_bairros == None:
         bairros_mapa = Bairro.objects.all()
+        if filtro_crimes != ['all'] or filtro_crimes != ['violent'] or filtro_crimes != ['not_violent']:
+            crimes_mapa = Crime.objects.filter(enquadramento__in=filtro_crimes).count()
+            print(crimes_mapa)
+        
     else:
-        print('Here')
-        bairros_mapa = Bairro.objects.filter(bairro__in=filtro_mapa) 
+        bairros_mapa = Bairro.objects.filter(bairro__in=filtro_bairros) 
 
     # Process the request and prepare the response
     response_data = {

@@ -19,9 +19,9 @@ import fiona
 #Function so it can be used from other script
 def process():
     #Read data
-    crimes_2021 = pd.read_csv('mapa_violencia/scripts/data/crimes_2021.csv', sep=';', encoding="ISO-8859-1")
-    crimes_2022 = pd.read_csv('mapa_violencia/scripts/data/crimes_2022.csv', sep=';', encoding="ISO-8859-1")
-    crimes_2023 = pd.read_csv('mapa_violencia/scripts/data/crimes_2023.csv', sep=';', encoding="ISO-8859-1")
+    crimes_2021 = pd.read_csv('scripts/data/crimes_2021.csv', sep=';', encoding="ISO-8859-1")
+    crimes_2022 = pd.read_csv('scripts/data/crimes_2022.csv', sep=';', encoding="ISO-8859-1")
+    crimes_2023 = pd.read_csv('scripts/data/crimes_2023.csv', sep=';', encoding="ISO-8859-1")
 
 
     crimes = pd.concat([crimes_2021, crimes_2022, crimes_2023], ignore_index=True)
@@ -49,20 +49,18 @@ def process():
     crimes['Bairro'] = crimes['Bairro'].apply(lambda x: x.upper())
 
 
-    #Open shapefile containing neighborhoods names
-    porto_alegre = fiona.open("mapa_violencia/resources/shapesbairros2016/Bairros_2016.shp")
+    #Open table containing neighborhoods names
+    bairros_metadata = pd.read_csv('scripts/resources/shapesbairros2016/Lista_de_bairros_de_Porto_Alegre_1.csv')
+    bairros_metadata['Bairro'] = bairros_metadata['Bairro'].apply(lambda x: x.upper())
 
-    bairros = list()
-
-    for i in porto_alegre:
-        bairros.append(i['properties']['NOME'])
+    bairros = bairros_metadata['Bairro']
 
 
     #Finds neighborhood with closest name
     crimes['Bairro2'] = crimes['Bairro'].apply(lambda x: difflib.get_close_matches(x, bairros, n=1))
 
     #Saves errors. Errors occur when it can't find any neighborhood
-    crimes[crimes["Bairro2"].str.len() == 0].groupby('Bairro').count().to_csv('mapa_violencia/scripts/data/error.csv')
+    crimes[crimes["Bairro2"].str.len() == 0].groupby('Bairro').count().to_csv('scripts/data/error.csv')
 
     #Drop old column, drop rows without neighborhood
     crimes['Bairro'] = crimes['Bairro2']
@@ -72,15 +70,12 @@ def process():
     crimes["Bairro"] = crimes["Bairro"].apply(lambda x: x[0])
 
     #Saves file
-    crimes.to_pickle('mapa_violencia/scripts/data/processed_data.pkl')
+    crimes.to_pickle('scripts/data/processed_data.pkl')
 
 
     #Now, let's process the metadata
-    #Opens table
-    bairros_metadata = pd.read_csv('mapa_violencia/resources/shapesbairros2016/Lista_de_bairros_de_Porto_Alegre_1.csv')
 
     #Same process to fina closest names
-    bairros_metadata['Bairro'] = bairros_metadata['Bairro'].apply(lambda x: x.upper())
     bairros_metadata['Bairro2'] = bairros_metadata['Bairro'].apply(lambda x: difflib.get_close_matches(x, bairros, n=1))
 
     #Drop old column. Drop rows without name
@@ -91,7 +86,7 @@ def process():
     bairros_metadata["Bairro"] = bairros_metadata["Bairro"].apply(lambda x: x[0])
 
     #Saves data
-    bairros_metadata.to_pickle('mapa_violencia/scripts/data/bairros_metadata.pkl')
+    bairros_metadata.to_pickle('scripts/data/bairros_metadata.pkl')
 
 
 if __name__=="__main__":
