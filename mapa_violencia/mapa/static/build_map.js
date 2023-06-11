@@ -1,6 +1,6 @@
 var map = L.map('map', {zoomSnap: 0.1}).setView([-30.096859, -51.152677], 10.6);
 
-    //Layer
+//Layer
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -63,6 +63,10 @@ async function getNeighborhoods(filtro_bairros) {
             g1 = concatGeoJSON(g1, neighborhods.lista_bairros[i].geometry);
         }
 
+        try {
+            map.removeLayer(geojson);
+        } catch(err) {}
+
         geojson = L.geoJSON(g1, {
             //filter: neighborhoods_filter,
             onEachFeature: onEachFeature
@@ -76,6 +80,7 @@ async function getNeighborhoods(filtro_bairros) {
 function create_map(filtro_bairros){
 
     getNeighborhoods(filtro_bairros);
+
 }
 
-create_map(['All'])
+create_map(['All']);

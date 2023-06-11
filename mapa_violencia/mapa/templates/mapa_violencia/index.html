@@ -149,7 +149,6 @@
 <script src="{% static 'build_map.js' %}"></script>
 <!-- Neighhborhood selector -->
 <script>
-	var filtro_bairros = ["All"];
 	document.getElementById('select_neighborhoods').addEventListener('change', function (e) {
 		if($('#select_neighborhoods').val()) {
 			document.getElementById('all_bairros').checked = false;
@@ -159,16 +158,18 @@
 		else {
 			if (!document.getElementById('all_bairros').checked) {
 				document.getElementById('all_bairros').checked = true;
+				var filtro_bairros = ["All"];
 				create_map(filtro_bairros)
 			}
 		}
 	});
 	document.getElementById('all_bairros').addEventListener('change', function (e) {
 		document.getElementById('all_bairros').checked = true;
+		var filtro_bairros = ["All"];
 		if($('#select_neighborhoods').val()) {
 			$('#select_neighborhoods').selectpicker('deselectAll');
-			create_map(filtro_bairros)
 		}
+		create_map(filtro_bairros)
 	});
 </script>
 </body>

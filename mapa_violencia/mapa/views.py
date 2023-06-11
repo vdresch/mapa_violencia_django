@@ -5,7 +5,7 @@ from mapa.models import Bairro
 def mapa(request):
 
     lista_crimes = ['Teste1', 'Teste2', 'Teste3']
-    lista_bairros = ['Teste1', 'Teste2', 'Teste3']
+    lista_bairros = list(Bairro.objects.values_list('bairro', flat=True).all())
 
     context = {'lista_crimes': lista_crimes, 'lista_bairros': lista_bairros}
 
@@ -18,12 +18,13 @@ def return_filters(request):
 
     print(request.POST.getlist('filtro_bairros[]', None))
 
-    filtro_mapa = request.POST.getlist('filtro_bairros', None)
+    filtro_mapa = request.POST.getlist('filtro_bairros[]', None)
 
-    if filtro_mapa == 'All' or filtro_mapa == None:
+    if filtro_mapa == ['All'] or filtro_mapa == None:
         bairros_mapa = Bairro.objects.all()
     else:
-        bairros_mapa = Bairro.objects.all()#Bairro.objects.filter(bairro__in=filtro_mapa) 
+        print('Here')
+        bairros_mapa = Bairro.objects.filter(bairro__in=filtro_mapa) 
 
     # Process the request and prepare the response
     response_data = {
