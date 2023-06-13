@@ -14,10 +14,17 @@
 
 import pandas as pd
 import difflib
-import fiona
+import datetime
+import re
+import numpy as np
+import json
+from pathlib import Path
+import locale
+
+locale.setlocale(locale.LC_ALL, 'pt_pt.UTF-8')
 
 #Function so it can be used from other script
-def process():
+def run():
     #Read data
     crimes_2021 = pd.read_csv('scripts/data/crimes_2021.csv', sep=';', encoding="ISO-8859-1")
     crimes_2022 = pd.read_csv('scripts/data/crimes_2022.csv', sep=';', encoding="ISO-8859-1")
@@ -48,6 +55,9 @@ def process():
     #Upper case
     crimes['Bairro'] = crimes['Bairro'].apply(lambda x: x.upper())
 
+    crimes['Data Fato'] = crimes['Data Fato'].apply(lambda x: datetime.datetime.strptime(x, '%d/%m/%Y'))
+    crimes['Hora Fato'] = crimes['Hora Fato'].apply(lambda x: datetime.datetime.strptime(x, '%H:%M:%S'))
+
 
     #Open table containing neighborhoods names
     bairros_metadata = pd.read_csv('scripts/resources/shapesbairros2016/Lista_de_bairros_de_Porto_Alegre_1.csv')
@@ -75,6 +85,13 @@ def process():
 
     #Now, let's process the metadata
 
+    #Geojson
+    src = Path("scripts/resources/shapesbairros2016/poa.geojson")
+    geojson = json.loads(src.read_text(encoding='ISO-8859-1'))
+    geometria = dict()
+    for i in geojson['features']:
+        geometria[i['properties']['Name']] = i['geometry']
+
     #Same process to fina closest names
     bairros_metadata['Bairro2'] = bairros_metadata['Bairro'].apply(lambda x: difflib.get_close_matches(x, bairros, n=1))
 
@@ -85,9 +102,23 @@ def process():
     bairros_metadata = bairros_metadata[bairros_metadata["Bairro"].str.len() != 0]
     bairros_metadata["Bairro"] = bairros_metadata["Bairro"].apply(lambda x: x[0])
 
+    #Some processing and cleaning
+    bairros_metadata = bairros_metadata[:-2]
+    bairros_metadata['Área'] = bairros_metadata['Área'].apply(lambda x: re.findall('\d+\.?\d*', x)[0] if pd.notna(x) else np.nan)
+    bairros_metadata['Densidade'] = bairros_metadata['Densidade'].apply(lambda x: re.findall('\d+\.?\d*', x)[0] if pd.notna(x) else np.nan)
+    bairros_metadata['Renda média por \ndomicílio'] = bairros_metadata['Renda média por \ndomicílio'].apply(lambda x: re.findall('\d+\.?\d*', x)[0] if pd.notna(x) else np.nan)
+    bairros_metadata['Data de \nCriação'] = bairros_metadata['Data de \nCriação'].apply(lambda x: datetime.datetime.strptime(x, '%d %b %Y'))
+
+    bairros_metadata = bairros_metadata.drop_duplicates(subset=['Bairro'], keep='first')
+
+    bairros_metadata = bairros_metadata.fillna(0)
+
+    #Adds the geojson
+    bairros_metadata['geometry'] = [geometria[i] for i in bairros_metadata['Bairro']]
+
     #Saves data
     bairros_metadata.to_pickle('scripts/data/bairros_metadata.pkl')
 
 
 if __name__=="__main__":
-    process()
+    run()

@@ -58,9 +58,8 @@ async function getNeighborhoods(filtro_bairros, filtro_crimes) {
         var g1 = { "type" : "FeatureCollection",
         "features" : []};
 
-        for (var i = 0; i < neighborhods.lista_bairros.length; i++){
-        // console.log(neighborhods.lista_bairros[i])
-            g1 = concatGeoJSON(g1, neighborhods.lista_bairros[i].geometry);
+        for (var i = 0; i < neighborhods.length; i++){
+            g1 = concatGeoJSON(g1, neighborhods[i].geometry);
         }
 
         try {
