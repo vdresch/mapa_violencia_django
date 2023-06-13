@@ -163,6 +163,8 @@
 			document.getElementById('all').checked = false;
 			document.getElementById('violent').checked = false;
 			document.getElementById('not_violent').checked = false;
+			var filtro_crimes = $('#select_crimes').val();
+			create_map(["All"], filtro_crimes);
 		}
 		//Else, check All crimes
 		else {

@@ -27,9 +27,9 @@ def return_filters(request):
 
     if filtro_bairros == ['All'] or filtro_bairros == None:
         bairros_mapa = bairros
-        #if filtro_crimes != ['all'] or filtro_crimes != ['violent'] or filtro_crimes != ['not_violent']:
-        #    crimes_mapa = Crime.objects.filter(enquadramento__in=filtro_crimes).count()
-        #    print(crimes_mapa)
+        if filtro_crimes != ['all'] or filtro_crimes != ['violent'] or filtro_crimes != ['not_violent']:
+            crimes_mapa = crimes[crimes['Tipo Enquadramento'].isin(filtro_crimes)]
+            bairros_mapa['n_crimes'] = [len(crimes_mapa[crimes_mapa['Bairro'] == i]) for i in bairros_mapa['Bairro']]
         
     else:
         bairros_mapa = bairros[bairros['Bairro'].isin(filtro_bairros)]

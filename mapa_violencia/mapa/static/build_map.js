@@ -49,6 +49,28 @@ function concatGeoJSON(g1, g2){
     }
 }
 
+function getColor(d) {
+    return d > 1000 ? '#800026' :
+           d > 500  ? '#BD0026' :
+           d > 200  ? '#E31A1C' :
+           d > 100  ? '#FC4E2A' :
+           d > 50   ? '#FD8D3C' :
+           d > 20   ? '#FEB24C' :
+           d > 10   ? '#FED976' :
+                      '#FFEDA0';
+}
+
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.n_crimes),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
 //Get selected neighborhoods
 
 async function getNeighborhoods(filtro_bairros, filtro_crimes) {
@@ -59,7 +81,11 @@ async function getNeighborhoods(filtro_bairros, filtro_crimes) {
         "features" : []};
 
         for (var i = 0; i < neighborhods.length; i++){
-            g1 = concatGeoJSON(g1, neighborhods[i].geometry);
+            var neighborhod = {"type":"Feature","id":"01","properties":
+            {"Bairro": neighborhods[i].Bairro, 'n_crimes': neighborhods[i].n_crimes},
+            "geometry": neighborhods[i].geometry};
+            g1 = concatGeoJSON(g1, neighborhod);
+
         }
 
         try {
@@ -67,8 +93,8 @@ async function getNeighborhoods(filtro_bairros, filtro_crimes) {
         } catch(err) {}
 
         geojson = L.geoJSON(g1, {
-            //filter: neighborhoods_filter,
-            onEachFeature: onEachFeature
+            onEachFeature: onEachFeature,
+            style: style
         }).addTo(map);
     
     } catch(err) {
