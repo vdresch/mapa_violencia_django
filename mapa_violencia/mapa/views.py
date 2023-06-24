@@ -56,8 +56,9 @@ def return_filters(request):
 
     crimes_mapa = crimes_mapa[(crimes_mapa['Data Fato']  > date_min) & (crimes_mapa['Data Fato']  <= date_max)]
 
-    #Crimes information to neighborhood
-    bairros_mapa['n_crimes'] = [len(crimes_mapa[crimes_mapa['Bairro'] == i]) for i in bairros_mapa['Bairro']]
+    #Report crimes information to neighborhood
+    grouped_crimes = crimes_mapa.groupby('Bairro').agg({'Sequência': 'count'}).reset_index()
+    bairros_mapa['n_crimes'] = bairros_mapa['Bairro'].apply(lambda x: grouped_crimes[grouped_crimes['Bairro'] == x]['Sequência'].values[0])
 
     #Return shapes and crimes
     response_data = bairros_mapa.to_dict(orient='records')
