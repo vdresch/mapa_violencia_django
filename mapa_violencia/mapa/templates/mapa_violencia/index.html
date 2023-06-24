@@ -2,6 +2,12 @@
 <html>
 <head>
 	{% load static %}
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+	<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
 	<title>Example Layout with Ads Space</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
@@ -44,61 +50,67 @@
 	</style>
 </head>
 <body>
-	<nav>
-		<div>
-			<h1 style="text-align: center;">Título</h1>
-		</div>
-		<div>
-			<form id="form_crimes">
-			{% csrf_token %}
-			<fieldset>
-				<input type="radio" id="all" name="tipo_crime" value="all" checked>
-				<label for="huey">Todos os crimes</label> <br>
-				<input type="radio" id="violent" name="tipo_crime" value="violent">
-				<label for="huey">Crimes violentos</label> <br>
-				<input type="radio" id="not_violent" name="tipo_crime" value="not_violent">
-				<label for="huey">Crimes não violentos</label>
-				<select id="select_crimes" name="tipo_crime" class="selectpicker" title="Selecione os crimes" multiple data-live-search="true">
-					{% for i in lista_crimes %}
-						<option values= {{ i }}> {{ i }} </option>
-					{% endfor %}
-				</select>
-			</fieldset>
-			</form>
-		</div>
-		<div style="padding-top: 20px;">
-			<form id="form_neighborhoods">
-			{% csrf_token %}
-			<fieldset>
-				<input type="radio" id="all_bairros" name="neighborhoods" value="all" checked>
-				<label for="huey">Todos os bairros</label> <br>
-				<select id="select_neighborhoods" name="neighborhoods" class="selectpicker" title="Selecione os bairros" multiple data-live-search="true">
-					{% for i in lista_bairros %}
-						<option values= {{ i }}> {{ i }} </option>
-					{% endfor %}
-				</select>
-			</fieldset>
-			</form>
-		</div>
-	</nav>
-  <main>
-<!-- Mapa -->
-		<div class="content">
-			<div id="map", style="height: 500px; position: relative; outline-style: none;"></div>
-		</div>
-		<div class="content">
-			<h2>Block 2</h2>
-			<p>Donec fringilla, orci vel eleifend dignissim, lorem mi aliquet nunc, eget euismod magna sapien nec nisi. Vestibulum facilisis erat a elit consequat semper. </p>
-		</div>
-  </main>
-  <div class="ads">
-    <h2>Ads</h2>
-    <p>Here's where you can put your ads.</p>
-  </div>
+<!-- Side bar -->
+<nav>
+<div>
+	<h1 style="text-align: center;">Título</h1>
+</div>
+<!-- Filters -->
+<div style="text-align: center; padding-top: 10px;">
+	<span id="amount" style="border: 0; color: #ffffff; font-weight: bold;"></span>
+	<div id="slider-range"></div>
+</div>
+<div style="padding-top: 20px;">
+	<form id="form_crimes">
+	{% csrf_token %}
+	<fieldset>
+		<input type="radio" id="all" name="tipo_crime" value="all" checked>
+		<label for="huey">Todos os crimes</label> <br>
+		<input type="radio" id="violent" name="tipo_crime" value="violent">
+		<label for="huey">Crimes violentos</label> <br>
+		<input type="radio" id="not_violent" name="tipo_crime" value="not_violent">
+		<label for="huey">Crimes não violentos</label>
+		<select id="select_crimes" name="tipo_crime" class="selectpicker" title="Selecione os crimes" multiple data-live-search="true">
+			{% for i in lista_crimes %}
+				<option values= {{ i }}> {{ i }} </option>
+			{% endfor %}
+		</select>
+	</fieldset>
+	</form>
+</div>
+<div style="padding-top: 20px;">
+	<form id="form_neighborhoods">
+	{% csrf_token %}
+	<fieldset>
+		<input type="radio" id="all_bairros" name="neighborhoods" value="all" checked>
+		<label for="huey">Todos os bairros</label> <br>
+		<select id="select_neighborhoods" name="neighborhoods" class="selectpicker" title="Selecione os bairros" multiple data-live-search="true">
+			{% for i in lista_bairros %}
+				<option values= {{ i }}> {{ i }} </option>
+			{% endfor %}
+		</select>
+	</fieldset>
+	</form>
+</div>
+</nav>
+<!-- Main content -->
+<main>
+<!-- Map -->
+<div class="content">
+	<div id="map", style="height: 500px; position: relative; outline-style: none;"></div>
+</div>
+<!-- Stats -->
+<div class="content">
+	<h2>Block 2</h2>
+	<p>Donec fringilla, orci vel eleifend dignissim, lorem mi aliquet nunc, eget euismod magna sapien nec nisi. Vestibulum facilisis erat a elit consequat semper. </p>
+</div>
+</main>
+<div class="ads">
+<h2>Ads</h2>
+<p>Here's where you can put your ads.</p>
+</div>
 
 {{ form.media.js }}
-<!-- jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Ajax and bootstap -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
@@ -110,49 +122,44 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
 {{ geojson|json_script:"geojson" }}
 <script src="{% static 'build_map.js' %}"></script>
-<!-- Neighhborhood selector -->
+<!-- Date selector -->
 <script>
-	var filtro_crimes = ['all'];
-	document.getElementById('select_neighborhoods').addEventListener('change', function (e) {
-		if($('#select_neighborhoods').val()) {
-			document.getElementById('all_bairros').checked = false;
-			var filtro_bairros = $('#select_neighborhoods').val();
-			if($('#select_crimes').val()) {
-				var filtro_crimes = $('#select_crimes').val();
+	
+	var sliderValues;
+
+	$(function () {
+      var max_date = '{{ max_date }}'
+	  
+	  var slider = $("#slider-range");
+	  var output = $("#amount");
+  
+	  slider.slider({
+			range: true,
+			min: new Date('2021.10.01').getTime() / 1000,
+			max: new Date(max_date).getTime() / 1000,
+			step: 86400,
+			values: [new Date('2021.10.01').getTime() / 1000, new Date(max_date).getTime() / 1000],
+			change: function (event, ui) {
+			var startValue = ui.values[0];
+			var endValue = ui.values[1];
+			sliderValues = [startValue, endValue];
+			// Call your function here, passing the start and end values
+			update();
 			}
-			else{
-				var filtro_crimes = [$('input[name=tipo_crime]:checked', '#form_crimes').val()];
-			}
-			create_map(filtro_bairros, filtro_crimes);
-		}
-		else {
-			if (!document.getElementById('all_bairros').checked) {
-				document.getElementById('all_bairros').checked = true;
-				var filtro_bairros = ["All"];
-				if($('#select_crimes').val()) {
-					var filtro_crimes = $('#select_crimes').val();
-				}
-				else{
-					var filtro_crimes = [$('input[name=tipo_crime]:checked', '#form_crimes').val()];
-				}
-				create_map(filtro_bairros, filtro_crimes);
-			}
-		}
+		});
+  
+	  var initialStartDate = new Date(slider.slider("values", 0) * 1000);
+	  var initialEndDate = new Date(slider.slider("values", 1) * 1000);
+	  
+	  var initialStartDateString = (initialStartDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialStartDate.getFullYear();
+	  var initialEndDateString = (initialEndDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialEndDate.getFullYear();
+	  
+	  output.text(initialStartDateString + " - " + initialEndDateString);
+	  update();
 	});
-	document.getElementById('all_bairros').addEventListener('change', function (e) {
-		document.getElementById('all_bairros').checked = true;
-		var filtro_bairros = ["All"];
-		if($('#select_neighborhoods').val()) {
-			$('#select_neighborhoods').selectpicker('deselectAll');
-		}
-		if($('#select_crimes').val()) {
-			var filtro_crimes = $('#select_crimes').val();
-		}
-		else{
-			var filtro_crimes = [$('input[name=tipo_crime]:checked', '#form_crimes').val()];
-		}
-		create_map(filtro_bairros, filtro_crimes);
-	});
+function getSliderValues() {
+  return sliderValues;
+}
 </script>
 <!-- Crime selector -->
 <script>
@@ -163,8 +170,6 @@
 			document.getElementById('all').checked = false;
 			document.getElementById('violent').checked = false;
 			document.getElementById('not_violent').checked = false;
-			var filtro_crimes = $('#select_crimes').val();
-			create_map(["All"], filtro_crimes);
 		}
 		//Else, check All crimes
 		else {
@@ -172,25 +177,76 @@
 				document.getElementById('all').checked = true;
 			}
 		}
+		update()
 	});
 	document.getElementById('all').addEventListener('change', function (e) {
 		document.getElementById('all').checked = true;
 		if($('#select_crimes').val()) {
 			$('#select_crimes').selectpicker('deselectAll');
 		}
+		update()
 	});
 	document.getElementById('violent').addEventListener('change', function (e) {
 		document.getElementById('violent').checked = true;
 		if($('#select_crimes').val()) {
 			$('#select_crimes').selectpicker('deselectAll');
 		}
+		update()
 	});
 	document.getElementById('not_violent').addEventListener('change', function (e) {
 		document.getElementById('not_violent').checked = true;
 		if($('#select_crimes').val()) {
 			$('#select_crimes').selectpicker('deselectAll');
 		}
+		update()
 	});
+</script>
+<!-- Neighhborhood selector -->
+<script>
+	document.getElementById('select_neighborhoods').addEventListener('change', function (e) {
+		if($('#select_neighborhoods').val()) {
+			document.getElementById('all_bairros').checked = false;
+		}
+		else {
+			if (!document.getElementById('all_bairros').checked) {
+				document.getElementById('all_bairros').checked = true;
+			}
+		}
+		update()
+	});
+	document.getElementById('all_bairros').addEventListener('change', function (e) {
+		document.getElementById('all_bairros').checked = true;
+		if($('#select_neighborhoods').val()) {
+			$('#select_neighborhoods').selectpicker('deselectAll');
+		}
+		update()
+	});
+</script>
+<!-- Update map -->
+<script>
+	function update() {
+		if($('#select_crimes').val()) {
+			var filtro_crimes = $('#select_crimes').val();
+		}
+		else{
+			var filtro_crimes = [$('input[name=tipo_crime]:checked', '#form_crimes').val()];
+		}
+		if($('#select_neighborhoods').val()) {
+			var filtro_bairros = $('#select_neighborhoods').val();
+		}
+		else {
+			var filtro_bairros = ["All"];
+		}
+		try {
+            var dates = getSliderValues();
+			var date_min =  new Date(dates[0]*1000);
+			var date_max =  new Date(dates[1]*1000);
+        } catch(err) {
+			var date_min = new Date('2021.10.01');
+			var date_max = new Date('{{ max_date }}');
+		}
+		create_map(filtro_bairros, filtro_crimes, date_min, date_max);
+	}
 </script>
 </body>
 </html>

@@ -5,7 +5,7 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-function getData(filtro_bairros, filtro_crimes) { 
+function getData(filtro_bairros, filtro_crimes, date_min, date_max) { 
     return $.ajax({
         type: 'POST',
         url: "return_filters/",
@@ -14,7 +14,8 @@ function getData(filtro_bairros, filtro_crimes) {
         "X-Requested-With": "XMLHttpRequest",
         "X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val(),
         },
-        data: {'filtro_bairros': filtro_bairros, 'filtro_crimes': filtro_crimes},
+        data: {'filtro_bairros': filtro_bairros, 'filtro_crimes': filtro_crimes, 
+                'date_min': date_min.toISOString(), 'date_max': date_max.toISOString()},
     });    
 };
 
@@ -73,9 +74,9 @@ function style(feature) {
 
 //Get selected neighborhoods
 
-async function getNeighborhoods(filtro_bairros, filtro_crimes) {
+async function create_map(filtro_bairros, filtro_crimes, date_min, date_max) {
     try {
-        var neighborhods = await getData(filtro_bairros, filtro_crimes);
+        var neighborhods = await getData(filtro_bairros, filtro_crimes, date_min, date_max);
 
         var g1 = { "type" : "FeatureCollection",
         "features" : []};
@@ -101,11 +102,3 @@ async function getNeighborhoods(filtro_bairros, filtro_crimes) {
     console.log(err);
     }
 }
-
-function create_map(filtro_bairros, filtro_crimes){
-
-    getNeighborhoods(filtro_bairros, filtro_crimes);
-
-}
-
-create_map(['All'], ['all']);
