@@ -23,6 +23,12 @@ def mapa(request):
 # Called by the js module that builds the leaflet map
 from django.http import JsonResponse
 
+def lambda_neighborhoods(grouped_crimes, x):
+    try:
+        return grouped_crimes[grouped_crimes['Bairro'] == x]['Sequência'].values[0]
+    except:
+        return 0
+
 def return_filters(request):
 
     #Get filters
@@ -58,7 +64,7 @@ def return_filters(request):
 
     #Report crimes information to neighborhood
     grouped_crimes = crimes_mapa.groupby('Bairro').agg({'Sequência': 'count'}).reset_index()
-    bairros_mapa['n_crimes'] = bairros_mapa['Bairro'].apply(lambda x: grouped_crimes[grouped_crimes['Bairro'] == x]['Sequência'].values[0])
+    bairros_mapa['n_crimes'] = bairros_mapa['Bairro'].apply(lambda x: lambda_neighborhoods(grouped_crimes, x))
 
     #Return shapes and crimes
     response_data = bairros_mapa.to_dict(orient='records')
