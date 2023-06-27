@@ -37,10 +37,12 @@ function highlightFeature(e) {
     });
 
     layer.bringToFront();
+    info.update(layer.feature.properties);
 }
 
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
+    info.update();
 }
 
 function concatGeoJSON(g1, g2){
@@ -72,11 +74,30 @@ function style(feature) {
     };
 }
 
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML =  (props ?
+        '<b>' + props.Bairro + '</b><br />' + props.n_crimes + ' crimes'
+        : 'Passe o mouse sobre o bairro');
+};
+
+info.addTo(map);
+
 //Get selected neighborhoods
 
 async function create_map(filtro_bairros, filtro_crimes, date_min, date_max) {
     try {
         var neighborhods = await getData(filtro_bairros, filtro_crimes, date_min, date_max);
+
+        console.log(neighborhods);
 
         var g1 = { "type" : "FeatureCollection",
         "features" : []};
