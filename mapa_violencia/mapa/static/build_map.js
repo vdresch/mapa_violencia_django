@@ -52,25 +52,27 @@ function concatGeoJSON(g1, g2){
     }
 }
 
-function getColor(d) {
-    return d > 1000 ? '#800026' :
-           d > 500  ? '#BD0026' :
-           d > 200  ? '#E31A1C' :
-           d > 100  ? '#FC4E2A' :
-           d > 50   ? '#FD8D3C' :
-           d > 20   ? '#FEB24C' :
-           d > 10   ? '#FED976' :
-                      '#FFEDA0';
+function getColor(d, total_crimes, n_bairros) {
+    d = d / total_crimes;
+    if(n_bairros > 8){
+        var weight = 3/n_bairros;
+    }
+    else{
+        var weight = 1/n_bairros;
+    }
+    const scale = chroma.scale(['#f2ff5c', '#e81300']).domain([0, weight]); // Define a color scale between two colors
+
+    return scale(d).hex();
 }
 
-function style(feature) {
+function style(feature, total_crimes, n_bairros) {
     return {
-        fillColor: getColor(feature.properties.n_crimes),
+        fillColor: getColor(feature.properties.n_crimes, total_crimes, n_bairros),
         weight: 2,
         opacity: 1,
         color: 'white',
         dashArray: '3',
-        fillOpacity: 0.7
+        fillOpacity: 1
     };
 }
 
@@ -84,8 +86,20 @@ info.onAdd = function (map) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
+    try{
+        if(props.population === 0){
+            var crime_density = 'Sem dados populacionais';
+        }
+        else{
+            var crime_density = Math.floor((props.n_crimes/props.population)*1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+             + ' crimes/1000 habitantes';
+        }}
+    catch(err) {}
+
     this._div.innerHTML =  (props ?
-        '<b>' + props.Bairro + '</b><br />' + props.n_crimes + ' crimes'
+        '<b>' + props.Bairro + '</b><br />' + props.n_crimes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' crimes' +
+        '</b><br />' + props.population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") +
+         ' habitantes' + '</b><br />' + crime_density.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
         : 'Passe o mouse sobre o bairro');
 };
 
@@ -97,14 +111,15 @@ async function create_map(filtro_bairros, filtro_crimes, date_min, date_max) {
     try {
         var neighborhods = await getData(filtro_bairros, filtro_crimes, date_min, date_max);
 
-        console.log(neighborhods);
+        var total_crimes = neighborhods.reduce((accumulator, obj) => accumulator + obj.n_crimes, 0);
+        var n_bairros = neighborhods.length;
 
         var g1 = { "type" : "FeatureCollection",
         "features" : []};
 
         for (var i = 0; i < neighborhods.length; i++){
             var neighborhod = {"type":"Feature","id":"01","properties":
-            {"Bairro": neighborhods[i].Bairro, 'n_crimes': neighborhods[i].n_crimes},
+            {"Bairro": neighborhods[i].Bairro, 'n_crimes': neighborhods[i].n_crimes, 'population': neighborhods[i].population},
             "geometry": neighborhods[i].geometry};
             g1 = concatGeoJSON(g1, neighborhod);
 
@@ -116,7 +131,9 @@ async function create_map(filtro_bairros, filtro_crimes, date_min, date_max) {
 
         geojson = L.geoJSON(g1, {
             onEachFeature: onEachFeature,
-            style: style
+            style: function(feature) {
+                return style(feature, total_crimes, n_bairros);
+            }
         }).addTo(map);
     
     } catch(err) {

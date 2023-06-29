@@ -116,6 +116,10 @@ def run():
     #Adds the geojson
     bairros_metadata['geometry'] = [geometria[i] for i in bairros_metadata['Bairro']]
 
+    #Rename
+    bairros = bairros.rename(columns={'Data de \nCriação': 'created_at', 'Área': 'area', 'População\n2010': 'population',
+                                  'Tx Cresc Pop \n91-00': 'grouth', 'Densidade': 'density', 'Renda média por \ndomicílio': 'average_income'})
+
     #Saves data
     bairros_metadata.to_pickle('scripts/data/bairros_metadata.pkl')
 
