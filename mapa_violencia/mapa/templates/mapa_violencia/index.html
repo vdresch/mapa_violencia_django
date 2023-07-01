@@ -158,7 +158,12 @@
 			var startValue = ui.values[0];
 			var endValue = ui.values[1];
 			sliderValues = [startValue, endValue];
-			// Call your function here, passing the start and end values
+			var initialStartDate = new Date(slider.slider("values", 0) * 1000);
+			var initialEndDate = new Date(slider.slider("values", 1) * 1000);
+			
+			var initialStartDateString = (initialStartDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialStartDate.getFullYear();
+			var initialEndDateString = (initialEndDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialEndDate.getFullYear();
+			output.text(initialStartDateString + " - " + initialEndDateString);
 			update();
 			}
 		});
@@ -172,6 +177,7 @@
 	  output.text(initialStartDateString + " - " + initialEndDateString);
 	  update();
 	});
+
 function getSliderValues() {
   return sliderValues;
 }
