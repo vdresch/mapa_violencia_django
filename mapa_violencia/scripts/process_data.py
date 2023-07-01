@@ -117,7 +117,7 @@ def run():
     bairros_metadata['geometry'] = [geometria[i] for i in bairros_metadata['Bairro']]
 
     #Rename
-    bairros = bairros.rename(columns={'Data de \nCriação': 'created_at', 'Área': 'area', 'População\n2010': 'population',
+    bairros_metadata = bairros_metadata.rename(columns={'Data de \nCriação': 'created_at', 'Área': 'area', 'População\n2010': 'population',
                                   'Tx Cresc Pop \n91-00': 'grouth', 'Densidade': 'density', 'Renda média por \ndomicílio': 'average_income'})
 
     #Saves data

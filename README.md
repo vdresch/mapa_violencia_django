@@ -2,7 +2,6 @@
 Mapa da violência em Django
 
 ### TODO to deploy
-- Jardim Europa
 - Formating
 - Name
 - phone UI
