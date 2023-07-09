@@ -18,7 +18,14 @@ def mapa(request):
 
     context = {'lista_crimes': lista_crimes, 'lista_bairros': lista_bairros, 'max_date': max_date}
 
-    return render(request, 'mapa_violencia/index.html', context)
+    user_agent = request.META['HTTP_USER_AGENT']
+
+    if 'Mobile' in user_agent:
+        template_name = 'mapa_violencia/index_mobile.html'
+    else:
+        template_name = 'mapa_violencia/index.html'
+
+    return render(request, template_name, context)
 
 # Called by the js module that builds the leaflet map
 from django.http import JsonResponse

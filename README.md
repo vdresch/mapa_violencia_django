@@ -6,7 +6,9 @@ Mapa da violência em Django
 - Name
 - phone UI
 - metodologia
+- size of the filters
 
 ### TODO extra features
 - crimes per capta / crimes totais
 - ranking of crimes
+- full screen map (phone only)

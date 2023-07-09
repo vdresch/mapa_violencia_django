@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+	<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+	<title>Example Layout with Ads Space</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+	<style>
+		/* Basic styles for the layout */
+		body {
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			height: 100vh;
+		}
+
+		main {
+			flex: 1 1 auto;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.content {
+			padding: 20px;
+			flex: 1 1 auto;
+		}
+
+		/* The sidebar menu */
+		.sidebar {
+			height: 100%; /* 100% Full-height */
+			width: 0; /* 0 width - change this with JavaScript */
+			position: fixed; /* Stay in place */
+			z-index: 99999; /* Stay on top */
+			top: 0;
+			left: 0;
+			background-color: #111; /* Black*/
+			color: #eee;
+			overflow-x: hidden; /* Disable horizontal scroll */
+			padding-top: 60px; /* Place content 60px from the top */
+			transition: 0.3s; /* 0.5 second transition effect to slide in the sidebar */
+		}
+
+		/* The sidebar links */
+		.sidebar a {
+			padding: 8px 8px 8px 32px;
+			text-decoration: none;
+			font-size: 25px;
+			color: #eee;
+			display: block;
+			transition: 0.3s;
+		}
+
+		/* Position and style the close button (top right corner) */
+		.sidebar .closebtn {
+			position: absolute;
+			top: 0;
+			right: 25px;
+			font-size: 6em;
+			margin-left: 50px;
+		}
+
+		/* The button used to open the sidebar */
+		.openbtn {
+			font-size: 5em;
+			height: 8%;
+			cursor: pointer;
+			background-color: #111;
+			color: white;
+			padding: 10px 15px;
+			border: none;
+		}
+
+		/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+		#main {
+			transition: margin-left .3s; /* If you want a transition effect */
+			padding: 20px;
+		}
+
+		/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+		@media screen and (max-height: 450px) {
+			.sidebar {padding-top: 15px;}
+			.sidebar a {font-size: 18px;}
+		}
+	</style>
+</head>
+<body>
+<!-- Side bar -->
+<div id="mySidebar" class="sidebar">
+	<div>
+		<h1 style="text-align: center; font-size: 10em;">Título</h1>
+	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	</div>
+	<div style="text-align: center; padding-top: 3%; padding-left: 7%; padding-right: 7%;">
+		<span id="amount" style="border: 0; color: #ffffff; font-weight: bold;"></span>
+		<div id="slider-range"></div>
+	</div>
+	<div style="padding-top: 6%; padding-left: 7%;">
+		<form id="form_crimes">
+		{% csrf_token %}
+		<fieldset>
+			<input type="radio" id="all" name="tipo_crime" value="all" checked>
+			<label for="huey">Todos os crimes</label> <br>
+			<input type="radio" id="violent" name="tipo_crime" value="violent">
+			<label for="huey">Crimes violentos</label> <br>
+			<input type="radio" id="not_violent" name="tipo_crime" value="not_violent">
+			<label for="huey">Crimes não violentos</label>
+			<br>
+			<select id="select_crimes" name="tipo_crime" class="selectpicker" title="Selecione os crimes" multiple data-live-search="true">
+				{% for i in lista_crimes %}
+					<option values= {{ i }}> {{ i }} </option>
+				{% endfor %}
+			</select>
+		</fieldset>
+		</form>
+	</div>
+	<div style="padding-top: 6%; padding-left: 7%;">
+		<form id="form_neighborhoods">
+		{% csrf_token %}
+		<fieldset>
+			<input type="radio" id="all_bairros" name="neighborhoods" value="all" checked>
+			<label for="huey">Todos os bairros</label> <br>
+			<select id="select_neighborhoods" name="neighborhoods" class="selectpicker" title="Selecione os bairros" multiple data-live-search="true">
+				{% for i in lista_bairros %}
+					<option values= {{ i }}> {{ i }} </option>
+				{% endfor %}
+			</select>
+		</fieldset>
+		</form>
+	</div>
+  </div>
+<!-- Main content -->
+<main>
+	<!-- Open sidebar -->
+	<button class="openbtn" onclick="openNav()" style="text-align: left; padding-left: 5%;">&#9776;</button>
+	<!-- Map -->
+	<div class="content">
+		<div id="map" style="height: 100%;"></div>
+	</div>
+</main>
+
+{{ form.media.js }}
+<!-- Ajax and bootstap -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<!-- Leaflet map -->
+<link rel="stylesheet" type="text/css" href="{% static 'leaflet/leaflet.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
+<script type="text/javascript" src="{% static 'leaflet/leaflet.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"></script>
+{{ geojson|json_script:"geojson" }}
+<script src="{% static 'build_map_mobile.js' %}"></script>
+<!-- Date selector -->
+<script>
+	
+	var sliderValues;
+
+	$(function () {
+      var max_date = '{{ max_date }}'
+	  
+	  var slider = $("#slider-range");
+	  var output = $("#amount");
+  
+	  slider.slider({
+			range: true,
+			min: new Date('2021.10.01').getTime() / 1000,
+			max: new Date(max_date).getTime() / 1000,
+			step: 86400,
+			values: [new Date('2021.10.01').getTime() / 1000, new Date(max_date).getTime() / 1000],
+			change: function (event, ui) {
+			var startValue = ui.values[0];
+			var endValue = ui.values[1];
+			sliderValues = [startValue, endValue];
+			var initialStartDate = new Date(slider.slider("values", 0) * 1000);
+			var initialEndDate = new Date(slider.slider("values", 1) * 1000);
+			
+			var initialStartDateString = (initialStartDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialStartDate.getFullYear();
+			var initialEndDateString = (initialEndDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialEndDate.getFullYear();
+			output.text(initialStartDateString + " - " + initialEndDateString);
+			update();
+			}
+		});
+  
+	  var initialStartDate = new Date(slider.slider("values", 0) * 1000);
+	  var initialEndDate = new Date(slider.slider("values", 1) * 1000);
+	  
+	  var initialStartDateString = (initialStartDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialStartDate.getFullYear();
+	  var initialEndDateString = (initialEndDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialEndDate.getFullYear();
+	  
+	  output.text(initialStartDateString + " - " + initialEndDateString);
+	  update();
+	});
+
+function getSliderValues() {
+  return sliderValues;
+}
+</script>
+<!-- Crime selector -->
+<script>
+	//Test change on the crimes list
+	document.getElementById('select_crimes').addEventListener('change', function (e) {
+		//If there is something on the list, uncheck all alternatives
+		if($('#select_crimes').val()) {
+			document.getElementById('all').checked = false;
+			document.getElementById('violent').checked = false;
+			document.getElementById('not_violent').checked = false;
+		}
+		//Else, check All crimes
+		else {
+			if (!document.getElementById('all').checked && !document.getElementById('violent').checked && !document.getElementById('not_violent').checked) {
+				document.getElementById('all').checked = true;
+			}
+		}
+		update()
+	});
+	document.getElementById('all').addEventListener('change', function (e) {
+		document.getElementById('all').checked = true;
+		if($('#select_crimes').val()) {
+			$('#select_crimes').selectpicker('deselectAll');
+		}
+		update()
+	});
+	document.getElementById('violent').addEventListener('change', function (e) {
+		document.getElementById('violent').checked = true;
+		if($('#select_crimes').val()) {
+			$('#select_crimes').selectpicker('deselectAll');
+		}
+		update()
+	});
+	document.getElementById('not_violent').addEventListener('change', function (e) {
+		document.getElementById('not_violent').checked = true;
+		if($('#select_crimes').val()) {
+			$('#select_crimes').selectpicker('deselectAll');
+		}
+		update()
+	});
+</script>
+<!-- Neighhborhood selector -->
+<script>
+	document.getElementById('select_neighborhoods').addEventListener('change', function (e) {
+		if($('#select_neighborhoods').val()) {
+			document.getElementById('all_bairros').checked = false;
+		}
+		else {
+			if (!document.getElementById('all_bairros').checked) {
+				document.getElementById('all_bairros').checked = true;
+			}
+		}
+		update()
+	});
+	document.getElementById('all_bairros').addEventListener('change', function (e) {
+		document.getElementById('all_bairros').checked = true;
+		if($('#select_neighborhoods').val()) {
+			$('#select_neighborhoods').selectpicker('deselectAll');
+		}
+		update()
+	});
+</script>
+<!-- Update map -->
+<script>
+	function update() {
+		if($('#select_crimes').val()) {
+			var filtro_crimes = $('#select_crimes').val();
+		}
+		else{
+			var filtro_crimes = [$('input[name=tipo_crime]:checked', '#form_crimes').val()];
+		}
+		if($('#select_neighborhoods').val()) {
+			var filtro_bairros = $('#select_neighborhoods').val();
+		}
+		else {
+			var filtro_bairros = ["All"];
+		}
+		try {
+            var dates = getSliderValues();
+			var date_min =  new Date(dates[0]*1000);
+			var date_max =  new Date(dates[1]*1000);
+        } catch(err) {
+			var date_min = new Date('2021.10.01');
+			var date_max = new Date('{{ max_date }}');
+		}
+		create_map(filtro_bairros, filtro_crimes, date_min, date_max);
+	}
+</script>
+<!-- Sidebar -->
+<script>
+function openNav() {
+	document.getElementById("mySidebar").style.width = "100%";
+	document.getElementById("main").style.marginLeft = "100%";
+  }
+  
+  /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+  function closeNav() {
+	document.getElementById("mySidebar").style.width = "0";
+	document.getElementById("main").style.marginLeft = "0";
+  }
+</script>
+</body>
+</html>
