@@ -1,9 +1,10 @@
-var map = L.map('map', {zoomSnap: 0.1}).setView([-30.096859, -51.152677], 12.3);
+var map = L.map('map', {zoomSnap: 0.1, zoomControl: false}).setView([-30.096859, -51.152677], 12.4);
 
 //Layer
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+
 
 function getData(filtro_bairros, filtro_crimes, date_min, date_max) { 
     return $.ajax({
@@ -83,7 +84,7 @@ function style(feature, total_crimes, n_bairros) {
 var info = L.control();
 
 info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"   
     this.update();
     return this._div;
 };
@@ -104,7 +105,7 @@ info.update = function (props) {
         '<b>' + props.Bairro + '</b><br />' + props.n_crimes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' crimes' +
         '</b><br />' + props.population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") +
          ' habitantes' + '</b><br />' + crime_density.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-        : 'Passe o mouse sobre o bairro');
+        : '');
 };
 
 info.addTo(map);
