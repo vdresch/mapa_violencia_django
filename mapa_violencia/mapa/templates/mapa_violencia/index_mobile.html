@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 	<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 	<title>Example Layout with Ads Space</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
@@ -76,14 +77,14 @@
 			position: absolute;
 			top: 0;
 			right: 25px;
-			font-size: 6em;
+			font-size: 40px;
 			margin-left: 50px;
 		}
 
 		.top-bar {
 			position: relative;
 			background-color: #111;
-			height: 7%;
+			height: 7vh; /* Use viewport height */
 			color: #fff;
 			text-align: center;
 		}
@@ -91,7 +92,8 @@
 		.menu-button {
 			position: absolute;
   			left: 15px;
-			font-size: 5em;
+			font-size: 25px;
+			font-weight: bold;
 			text-align: left;
 			background: none;
 			border: none;
@@ -102,8 +104,8 @@
 		}
 
 		.title {
-			padding-top: 2%;
-			font-size: 5em;
+			padding-top: 3%;
+			font-size: 30px;
 			margin: 0;
 		}
 
@@ -118,7 +120,8 @@
 			.sidebar {padding-top: 15px;}
 			.sidebar a {font-size: 18px;}
 		}
-		
+
+
 	</style>
 </head>
 <body>
@@ -126,14 +129,33 @@
 <div id="mySidebar" class="sidebar">
 	<!-- Title -->
 	<div>
-		<h1 style="text-align: center; font-size: 10em;">Título</h1>
-	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<h1 style="text-align: center; font-size: 50px;">Título</h1>
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	</div>
 	<!-- Date filter -->
+	<div date-rangepicker class="flex items-center justify-center w-full" style="padding-top: 6%;">
+		<div class="relative">
+			<div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
+				<svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+					<path d="M10 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+				</svg>
+			</div>			  
+			<input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-1xl text-right rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 py-1 pr-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="date1">
+		</div>
+		<span class="mx-2 text-gray-500 text-1xl font-bold">até</span>
+		<div class="relative">
+			<div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
+				<svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+					<path d="M10 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+				</svg>
+			</div>
+			<input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-1xl text-right rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 py-1 pr-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="date2">
+		</div>
+	  </div>
 	<div style="text-align: center; padding-top: 3%">
-		<span id="amount" style="border: 0; color: #ffffff; font-weight: bold; font-size: 4em;"></span>
 		<div id="slider-range"></div>
 	</div>
+	<!-- Crimes fiter -->
 	<div style="padding-top: 6%; padding-left: 7%;">
 		<form id="form_crimes">
 		{% csrf_token %}
@@ -153,6 +175,7 @@
 		</fieldset>
 		</form>
 	</div>
+	<!-- Neighborhoods -->
 	<div style="padding-top: 6%; padding-left: 7%;">
 		<form id="form_neighborhoods">
 		{% csrf_token %}
@@ -194,49 +217,35 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"></script>
 {{ geojson|json_script:"geojson" }}
 <script src="{% static 'build_map_mobile.js' %}"></script>
-<!-- Date selector -->
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Date picker -->
+<script type="text/javascript" src="{% static 'rolldate/rolldate.min.js' %}"></script>
 <script>
-	
-	var sliderValues;
 
-	$(function () {
-      var max_date = '{{ max_date }}'
-	  
-	  var slider = $("#slider-range");
-	  var output = $("#amount");
-  
-	  slider.slider({
-			range: true,
-			min: new Date('2021.10.01').getTime() / 1000,
-			max: new Date(max_date).getTime() / 1000,
-			step: 86400,
-			values: [new Date('2021.10.01').getTime() / 1000, new Date(max_date).getTime() / 1000],
-			change: function (event, ui) {
-			var startValue = ui.values[0];
-			var endValue = ui.values[1];
-			sliderValues = [startValue, endValue];
-			var initialStartDate = new Date(slider.slider("values", 0) * 1000);
-			var initialEndDate = new Date(slider.slider("values", 1) * 1000);
-			
-			var initialStartDateString = (initialStartDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialStartDate.getFullYear();
-			var initialEndDateString = (initialEndDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialEndDate.getFullYear();
-			output.text(initialStartDateString + " - " + initialEndDateString);
-			update();
-			}
-		});
-  
-	  var initialStartDate = new Date(slider.slider("values", 0) * 1000);
-	  var initialEndDate = new Date(slider.slider("values", 1) * 1000);
-	  
-	  var initialStartDateString = (initialStartDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialStartDate.getFullYear();
-	  var initialEndDateString = (initialEndDate.getMonth() + 1).toString().padStart(2, '0') + "/" + initialEndDate.getFullYear();
-	  
-	  output.text(initialStartDateString + " - " + initialEndDateString);
-	  update();
-	});
 
-function getSliderValues() {
-  return sliderValues;
+
+window.onload = function() {
+	new Rolldate({
+		el: '#date1',
+		format: 'MM-YYYY',
+		beginYear: 2021,
+		endYear: new Date().getFullYear(),
+		value: '2021-10',
+		confirm: function(date) {
+			update_from_datepiker(date, true);
+		}
+	}),
+	new Rolldate({
+		el: '#date2',
+		format: 'MM-YYYY',
+		beginYear: 2021,
+		endYear: new Date().getFullYear(),
+		value: '2023-10',
+		confirm: function(date) {
+			update_from_datepiker(date, false);
+		}
+	})
 }
 </script>
 <!-- Crime selector -->
@@ -316,9 +325,42 @@ function getSliderValues() {
 			var filtro_bairros = ["All"];
 		}
 		try {
-            var dates = getSliderValues();
-			var date_min =  new Date(dates[0]*1000);
-			var date_max =  new Date(dates[1]*1000);
+			var date_min = document.getElementById('date1').value.split('-')
+			var date_min =  new Date(date_min[1], date_min[0]-1);
+			var date_max = document.getElementById('date2').value.split('-')
+			var date_max =  new Date(date_max[1], date_max[0]);
+        } catch(err) {
+			var date_min = new Date('2021.10.01');
+			var date_max = new Date('{{ max_date }}');
+		}
+		create_map(filtro_bairros, filtro_crimes, date_min, date_max);
+	}
+
+	//Function to update map when datepicker changes, because can't get element by ID
+	function update_from_datepiker(date, minmax) {
+		if($('#select_crimes').val()) {
+			var filtro_crimes = $('#select_crimes').val();
+		}
+		else{
+			var filtro_crimes = [$('input[name=tipo_crime]:checked', '#form_crimes').val()];
+		}
+		if($('#select_neighborhoods').val()) {
+			var filtro_bairros = $('#select_neighborhoods').val();
+		}
+		else {
+			var filtro_bairros = ["All"];
+		}
+		try {
+			var date = date.split('-')
+			if(minmax){
+				var date_min =  new Date(date[1], date[0]-1);
+				var date_max = document.getElementById('date2').value.split('-')
+				var date_max =  new Date(date_max[1], date_max[0]);
+			} else {
+				var date_max =  new Date(date[1], date[0]);
+				var date_min = document.getElementById('date1').value.split('-')
+				var date_min =  new Date(date_min[1], date_min[0]-1);
+			}
         } catch(err) {
 			var date_min = new Date('2021.10.01');
 			var date_max = new Date('{{ max_date }}');
@@ -330,13 +372,11 @@ function getSliderValues() {
 <script>
 function openNav() {
 	document.getElementById("mySidebar").style.width = "100%";
-	document.getElementById("main").style.marginLeft = "100%";
   }
   
   /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
-  function closeNav() {
+function closeNav() {
 	document.getElementById("mySidebar").style.width = "0";
-	document.getElementById("main").style.marginLeft = "0";
   }
 </script>
 </body>

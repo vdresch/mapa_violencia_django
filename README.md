@@ -6,7 +6,8 @@ Mapa da violência em Django
 - Name
 - phone UI
 - metodologia
-- size of the filters
+- tailwind to production (calendar image as well)
+- mobile date filter to desktop
 
 ### TODO extra features
 - crimes per capta / crimes totais

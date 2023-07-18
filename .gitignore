@@ -5,3 +5,7 @@ mapa_violencia/resources/shapesbairros2016
 mapa_violencia/db.sqlite3
 mapa_violencia/mapa/migrations
 .DS_Store
+mapa_violencia/mapa/static/rolldate/rolldate.es.js
+mapa_violencia/mapa/static/rolldate/rolldate.cjs.js
+mapa_violencia/mapa/static/rolldate/index.html
+mapa_violencia/mapa/static/rolldate/rolldate.js
