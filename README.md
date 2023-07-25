@@ -5,11 +5,9 @@ Mapa da violência em Django
 - Formating
 - Name
 - metodologia
-- tailwind to production (calendar image as well)
 - mobile date filter to desktop
 
 ### TODO extra features
 - crimes per capta / crimes totais
 - ranking of crimes
-- full screen map (phone only)
 - change datepicker min date

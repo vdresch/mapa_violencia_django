@@ -123,6 +123,26 @@
 			.sidebar a {font-size: 18px;}
 		}
 
+		.calendar_divider {
+			margin-left: 0.5rem;
+			margin-right: 0.5rem; 
+			font-weight: 700; 
+			color: #6B7280; 
+		}
+
+		.date_box {
+			display: block; 
+			padding-top: 0.25rem;
+			padding-bottom: 0.25rem; 
+			border-radius: 0.5rem; 
+			border-width: 1px; 
+			border-color: #D1D5DB; 
+			width: 9rem; 
+			text-align: center; 
+			color: #111827; 
+			font-weight: 500;
+			background-color: #F9FAFB; 
+		}
 
 	</style>
 </head>
@@ -135,23 +155,13 @@
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	</div>
 	<!-- Date filter -->
-	<div date-rangepicker class="flex items-center justify-center w-full" style="padding-top: 6%;">
-		<div class="relative">
-			<div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
-				<svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-					<path d="M10 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-				</svg>
-			</div>			  
-			<input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-1xl text-right rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 py-1 pr-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="date1">
+	<div date-rangepicker style="padding-top: 6%;display: flex; justify-content: center; align-items: center; width: 100%;">
+		<div class="relative">		  
+			<input type="text" class="date_box" id="date1">
 		</div>
-		<span class="mx-2 text-gray-500 text-1xl font-bold">até</span>
+		<span class="calendar_divider">até</span>
 		<div class="relative">
-			<div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
-				<svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-					<path d="M10 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-				</svg>
-			</div>
-			<input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-1xl text-right rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 py-1 pr-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="date2">
+			<input type="text" class="date_box" id="date2">
 		</div>
 	  </div>
 	<div style="text-align: center; padding-top: 3%">
@@ -216,11 +226,11 @@
 <script type="text/javascript" src="{% static 'leaflet/leaflet.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+<link rel="stylesheet" href="{% static 'leaflet/Control.FullScreen.css' %}" />
+<script src="{% static 'leaflet/Control.FullScreen.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"></script>
 {{ geojson|json_script:"geojson" }}
 <script src="{% static 'build_map_mobile.js' %}"></script>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
 <!-- Date picker -->
 <script type="text/javascript" src="{% static 'rolldate/rolldate.min.js' %}"></script>
 <script>
