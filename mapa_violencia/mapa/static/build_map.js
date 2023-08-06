@@ -1,4 +1,8 @@
-var map = L.map('map', {zoomSnap: 0.1}).setView([-30.096859, -51.152677], 10.6);
+var map = L.map('map', {zoomSnap: 0.1,
+                        fullscreenControl: true,
+                        fullscreenControlOptions: {
+                        position: 'topleft'
+                        }}).setView([-30.096859, -51.152677], 10.6);
 
 //Layer
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

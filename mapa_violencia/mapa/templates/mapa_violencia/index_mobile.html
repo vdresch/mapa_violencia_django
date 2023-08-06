@@ -164,9 +164,6 @@
 			<input type="text" class="date_box" id="date2">
 		</div>
 	  </div>
-	<div style="text-align: center; padding-top: 3%">
-		<div id="slider-range"></div>
-	</div>
 	<!-- Crimes fiter -->
 	<div style="padding-top: 6%; padding-left: 7%;">
 		<form id="form_crimes">
@@ -334,9 +331,9 @@ window.onload = function() {
 			var filtro_bairros = ["All"];
 		}
 		try {
-			var date_min = document.getElementById('date1').value.split('-')
+			var date_min = document.getElementById('date1').value.split('-');
 			var date_min =  new Date(date_min[1], date_min[0]-1);
-			var date_max = document.getElementById('date2').value.split('-')
+			var date_max = document.getElementById('date2').value.split('-');
 			var date_max =  new Date(date_max[1], date_max[0]);
         } catch(err) {
 			var date_min = new Date('2021.10.01');
@@ -363,11 +360,11 @@ window.onload = function() {
 			var date = date.split('-')
 			if(minmax){
 				var date_min =  new Date(date[1], date[0]-1);
-				var date_max = document.getElementById('date2').value.split('-')
+				var date_max = document.getElementById('date2').value.split('-');
 				var date_max =  new Date(date_max[1], date_max[0]);
 			} else {
 				var date_max =  new Date(date[1], date[0]);
-				var date_min = document.getElementById('date1').value.split('-')
+				var date_min = document.getElementById('date1').value.split('-');
 				var date_min =  new Date(date_min[1], date_min[0]-1);
 			}
         } catch(err) {

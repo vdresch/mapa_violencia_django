@@ -5,9 +5,10 @@ Mapa da violência em Django
 - Formating
 - Name
 - metodologia
-- mobile date filter to desktop
+- max_date mobiles
 
 ### TODO extra features
 - crimes per capta / crimes totais
 - ranking of crimes
-- change datepicker min date
+- change datepicker min date mobile (so it does not go below oct 2021)
+- filtro por hora e dia da semana
