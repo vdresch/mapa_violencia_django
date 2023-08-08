@@ -231,27 +231,36 @@
 <!-- Date picker -->
 <script type="text/javascript" src="{% static 'rolldate/rolldate.min.js' %}"></script>
 <script>
-window.onload = function() {
-	new Rolldate({
-		el: '#date1',
-		format: 'MM-YYYY',
-		beginYear: 2021,
-		endYear: new Date().getFullYear(),
-		value: '2021-10',
-		confirm: function(date) {
-			update_from_datepiker(date, true);
-		}
-	}),
-	new Rolldate({
-		el: '#date2',
-		format: 'MM-YYYY',
-		beginYear: 2021,
-		endYear: new Date().getFullYear(),
-		value: '2023-10',
-		confirm: function(date) {
-			update_from_datepiker(date, false);
-		}
-	})
+	var max_date = new Date('{{ max_date }}');
+	var month = max_date.getMonth()
+	if(month < 9){
+		month = '0' + (month + 1).toString()
+	}
+	else{
+		month = month.toString()
+	}
+	var max_date = max_date.getFullYear().toString() + '-' + month;
+	window.onload = function() {
+		new Rolldate({
+			el: '#date1',
+			format: 'MM-YYYY',
+			beginYear: 2021,
+			endYear: new Date().getFullYear(),
+			value: '2021-10',
+			confirm: function(date) {
+				update_from_datepiker(date, true);
+			}
+		}),
+		new Rolldate({
+			el: '#date2',
+			format: 'MM-YYYY',
+			beginYear: 2021,
+			endYear: new Date().getFullYear(),
+			value: max_date,
+			confirm: function(date) {
+				update_from_datepiker(date, false);
+			}
+		})
 }
 </script>
 <!-- Crime selector -->

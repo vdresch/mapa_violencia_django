@@ -5,7 +5,6 @@ Mapa da violência em Django
 - Formating
 - Name
 - metodologia
-- max_date mobiles
 
 ### TODO extra features
 - crimes per capta / crimes totais
