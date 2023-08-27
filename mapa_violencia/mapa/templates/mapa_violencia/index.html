@@ -8,7 +8,7 @@
 	<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
-	<title>Example Layout with Ads Space</title>
+	<title>MAPA DA VIOLÊNCIA</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 	<style>
@@ -74,7 +74,7 @@
 			display: block; 
 			padding-top: 0.25rem;
 			padding-bottom: 0.25rem; 
-			border-radius: 0.5rem; 
+			border-radius: 0.3rem; 
 			border-width: 1px; 
 			border-color: #D1D5DB; 
 			width: 9rem; 
@@ -219,9 +219,12 @@
 		<input type="radio" id="not_violent" name="tipo_crime" value="not_violent">
 		<label for="huey">Crimes não violentos</label>
 		<br>
-		<select id="select_crimes" name="tipo_crime" class="selectpicker" title="Selecione os crimes" multiple data-live-search="true">
+		<select id="select_crimes" name="tipo_crime" class="selectpicker" title="Selecione os crimes" multiple data-live-search="true"
+			data-width="100%">
+			{% load too_long %}
 			{% for i in lista_crimes %}
-				<option values= {{ i }}> {{ i }} </option>
+				{% too_long i as i_short %}
+				<option values= {{ i }}> {{ i_short }} </option>
 			{% endfor %}
 		</select>
 	</fieldset>
@@ -234,7 +237,8 @@
 	<fieldset>
 		<input type="radio" id="all_bairros" name="neighborhoods" value="all" checked>
 		<label for="huey">Todos os bairros</label> <br>
-		<select id="select_neighborhoods" name="neighborhoods" class="selectpicker" title="Selecione os bairros" multiple data-live-search="true">
+		<select id="select_neighborhoods" name="neighborhoods" class="selectpicker" title="Selecione os bairros" multiple data-live-search="true"
+			data-width="100%">
 			{% for i in lista_bairros %}
 				<option values= {{ i }}> {{ i }} </option>
 			{% endfor %}
@@ -245,20 +249,11 @@
 </nav>
 <!-- Main content -->
 <main>
-<!-- Map -->
-<div class="content">
-	<div id="map", style="height: 100%; position: relative; outline-style: none;"></div>
-</div>
-<!-- Stats -->
-<!-- <div class="content">
-	<h2>Block 2</h2>
-	<p>Donec fringilla, orci vel eleifend dignissim, lorem mi aliquet nunc, eget euismod magna sapien nec nisi. Vestibulum facilisis erat a elit consequat semper. </p>
-</div>
+	<!-- Map -->
+	<div class="content">
+		<div id="map", style="height: 100%; position: relative; outline-style: none; z-index: 0;"></div>
+	</div>
 </main>
-<div class="ads">
-<h2>Ads</h2>
-<p>Here's where you can put your ads.</p>
-</div> -->
 
 {{ form.media.js }}
 <!-- Ajax and bootstap -->

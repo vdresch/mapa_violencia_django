@@ -2,10 +2,9 @@
 Mapa da violência em Django
 
 ### TODO to deploy
-- Name
+- Name (mobile)
 - metodologia
 - github and metodologia link
-- format filter on desktop
 
 ### TODO extra features
 - crimes per capta / crimes totais
