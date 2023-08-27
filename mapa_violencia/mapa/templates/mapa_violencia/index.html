@@ -17,13 +17,13 @@
 			margin: 0;
 			padding: 0;
 			display: flex;
+			min-height: 100vh; /* Ensure body covers at least the viewport height */
 		}
 
 		nav {
 			background-color: #333;
 			color: #fff;
 			flex: 0 0 200px; /* Fixed width for the nav bar */
-			bottom: 0;
 			padding: 20px;
 		}
 
@@ -31,8 +31,9 @@
 			flex: 1; /* Take up remaining space */
 			display: flex;
 			flex-direction: column;
+			min-height: 100vh; /* Ensure main covers at least the viewport height */
 		}
-
+		
 		.content {
 			flex: 1; /* Take up equal space */
 			padding: 20px;
@@ -182,13 +183,18 @@
 			color: #999;
 		}
 
+		@font-face {
+			font-family: Kazmann Sans;
+			src: url("{% static 'fonts/KazmannSans.ttf' %}") format("truetype");
+		}
+
 	</style>
 </head>
 <body>
 <!-- Side bar -->
 <nav>
 <div>
-	<h1 style="text-align: center;">Título</h1>
+	<h1 style="text-align: center; font-family: Kazmann Sans; font-size: 78px; ">MAPA DA<br>VIOLÊNCIA</h1>
 </div>
 <!-- Filters -->
 <!-- Date -->
@@ -241,10 +247,10 @@
 <main>
 <!-- Map -->
 <div class="content">
-	<div id="map", style="height: 500px; position: relative; outline-style: none;"></div>
+	<div id="map", style="height: 100%; position: relative; outline-style: none;"></div>
 </div>
 <!-- Stats -->
-<div class="content">
+<!-- <div class="content">
 	<h2>Block 2</h2>
 	<p>Donec fringilla, orci vel eleifend dignissim, lorem mi aliquet nunc, eget euismod magna sapien nec nisi. Vestibulum facilisis erat a elit consequat semper. </p>
 </div>
@@ -252,7 +258,7 @@
 <div class="ads">
 <h2>Ads</h2>
 <p>Here's where you can put your ads.</p>
-</div>
+</div> -->
 
 {{ form.media.js }}
 <!-- Ajax and bootstap -->
