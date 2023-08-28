@@ -6,8 +6,8 @@ register = template.Library()
 def too_long(i):
     print(i)
     print(len(i))
-    if len(i) > 50:
-        i = i[0:50] + '...'
+    if len(i) > 40:
+        i = i[0:40] + '...'
 
     return i
 

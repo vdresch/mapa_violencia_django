@@ -156,7 +156,7 @@
 <div id="mySidebar" class="sidebar">
 	<!-- Title -->
 	<div>
-		<h1 style="text-align: center; font-family: Kazmann Sans; font-size: 50px;">MAPA DA VIOLÊNCIA</h1>
+		<h1 style="text-align: center; font-family: Kazmann Sans; font-size: 50px;">MAPA DA<br>VIOLÊNCIA</h1>
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	</div>
 	<!-- Date filter -->
@@ -181,10 +181,13 @@
 			<input type="radio" id="not_violent" name="tipo_crime" value="not_violent">
 			<label for="huey">Crimes não violentos</label>
 			<br>
-			<select id="select_crimes" name="tipo_crime" class="selectpicker" title="Selecione os crimes" multiple data-live-search="true">
-				{% for i in lista_crimes %}
-					<option values= {{ i }}> {{ i }} </option>
-				{% endfor %}
+			<select id="select_crimes" name="tipo_crime" class="selectpicker" title="Selecione os crimes" multiple data-live-search="true"
+			data-width="93%">
+			{% load too_long_mobile %}
+			{% for i in lista_crimes %}
+				{% too_long_mobile i as i_short %}
+				<option values= {{ i }} style="font-size: 12px; color: #111;"> {{ i_short }} </option>
+			{% endfor %}
 			</select>
 		</fieldset>
 		</form>
@@ -196,9 +199,10 @@
 		<fieldset>
 			<input type="radio" id="all_bairros" name="neighborhoods" value="all" checked>
 			<label for="huey">Todos os bairros</label> <br>
-			<select id="select_neighborhoods" name="neighborhoods" class="selectpicker" title="Selecione os bairros" multiple data-live-search="true">
+			<select id="select_crimes" name="tipo_crime" class="selectpicker" title="Selecione os crimes" multiple data-live-search="true"
+			data-width="93%">
 				{% for i in lista_bairros %}
-					<option values= {{ i }}> {{ i }} </option>
+					<option values= {{ i }} style="font-size: 12px; color: #111;"> {{ i }} </option>
 				{% endfor %}
 			</select>
 		</fieldset>

@@ -12,6 +12,7 @@ crimes = pd.read_pickle('scripts/data/processed_data.pkl')
 def mapa(request):
 
     lista_crimes = list(crimes['Tipo Enquadramento'].unique())
+    lista_crimes.sort()
     lista_bairros = list(bairros['Bairro'])
 
     max_date = max(crimes['Data Fato']).isoformat()
