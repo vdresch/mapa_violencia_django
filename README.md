@@ -2,8 +2,9 @@
 Mapa da violência em Django
 
 ### TODO to deploy
-- metodologia
-- github and metodologia link
+- sobre
+- sobre mobile
+- github link
 - readme
 - domain
 - deploy
@@ -12,6 +13,6 @@ Mapa da violência em Django
 - crimes per capta / crimes totais
 - ranking of crimes
 - change datepicker min date mobile (so it does not go below oct 2021)
-- filtro por hora e dia da semana
+- filter by weekday and time
 - css to separate file
 - clean and document code

@@ -188,6 +188,25 @@
 			src: url("{% static 'fonts/KazmannSans.ttf' %}") format("truetype");
 		}
 
+		.hidden {
+			display: none;
+		}
+
+		.link-button {
+			background: none;
+			border: none;
+			font-size: 36px; /* Adjust the font size to match the appearance of an h4 */
+			font-family: Kazmann Sans;
+			font-weight: bold; /* Make it bold to resemble a heading */
+			color: inherit; /* Inherit text color from parent */
+			cursor: pointer;
+			transition: color 0.3s; /* Add a smooth color transition on hover */
+		}
+
+		.link-button:hover {
+			color: rgb(177, 177, 177); /* Change the color on hover to your preferred color */
+		}
+		
 	</style>
 </head>
 <body>
@@ -195,6 +214,12 @@
 <nav>
 <div>
 	<h1 style="text-align: center; font-family: Kazmann Sans; font-size: 78px; ">MAPA DA<br>VIOLÊNCIA</h1>
+</div>
+<!-- Map button -->
+<div>
+	<button id="map_button" class="link-button">Mapa</button>
+	<button id="sobre_button" class="link-button">Sobre</button>
+	<a href="https://github.com/vdresch" class="link-button" style="text-decoration: none" target="_blank">Github</a>
 </div>
 <!-- Filters -->
 <!-- Date -->
@@ -246,9 +271,47 @@
 	</fieldset>
 	</form>
 </div>
+<!-- Sobre button -->
 </nav>
 <!-- Main content -->
 <main>
+	<!-- Sobre -->
+	<div id="hiddenDiv" class="hidden" style="height: 100%; position: relative; outline-style: none; z-index: 0;">
+        <div class="content">
+			<h4>Sobre o projeto</h4>
+			<p>Donec fringilla, orci vel eleifend dignissim, lorem mi aliquet nunc, eget euismod magna sapien nec nisi. Vestibulum facilisis erat a elit consequat semper. </p>
+			<br>
+			<h4>Base de dados</h4>
+			<p>De acordo com a Lei nº 15.610 de 29 de abril de 2021, a Secretária de Segurança Pública do Rio Grande do Sul publica mensalmente 
+			   uma base com todos os registros de crimes nos estado. Essa base contém uma linha para cada crime registrado, com dados de data, 
+			   tipo de ocorrência e local do evento. Todas as informações referentes a crimes vêm 
+			   <a href="https://ssp.rs.gov.br/dados-abertos" style="text-decoration: none" target="_blank">dessa base.</a></p>
+			<p>Os limites geográficos dos bairros são fornecidos pela <a href="http://observapoa.com.br/default.php?reg=259&p_secao=46" style="text-decoration: none" target="_blank">Prefeitura de Porto Alegre.</a> 
+				Os dados populacionais são retirados do <a href="https://pt.wikipedia.org/wiki/Lista_de_bairros_de_Porto_Alegre" style="text-decoration: none" target="_blank">Wikipedia</a> e são referentes ao Censo de 2010.
+				Como existem bairros que foram criados após o Censo, esses bairros não possuem dados populacionais. Dessa forma, não é possível fazer os
+				cálculos de criminalidade per capita.
+			</p>
+			<br>
+			<h4>Processamento</h4>
+			<p>O processo de processamento da base é bastante simples, e se trata apenas de uma limpeza da base e um merge com os dados geográficos
+				e populacionais. </p>
+			<p>A limpeza da base consiste em, primeiro, filtrar apenas eventos ocorridos em Porto Alegre, e segundo, corrigir problemas
+				de nomenclatura de bairros. Como o bairro da ocorrência é de preenchimento manual pela vítima, o passo de corrigir a nomenclatura é necessário. 
+				A correção da nomenclatura ocorre através da alteração de algumas abreviaturas (sta para Santa e vl para Vila), alteração de alguns nomes populares 
+				para o nome oficial (Protásio Alves para Morro Santana, Centro e Cais do Porto para Centro Histórico, Intercap para Partenon), e por fim é utilizado 
+				o algoritmo get_close_matches() do difflib para corrigir pequenos problemas gramaticais. O processo é open source e pode ser acessado 
+				<a href="https://github.com/vdresch/mapa_violencia_django/blob/main/mapa_violencia/scripts/process_data.py" style="text-decoration: none" target="_blank">nesse link.</a>
+			</p>
+			<br>
+			<h4>Crimes violentos e não violentos</h4>
+			<p>A definição do que constitui um crime violento e um crime não violento foi feita de forma arbitrária e não técnica. 
+			   Como o processo foi efetuado de forma manual, também é possível erros humanos na classificação. A lista de crimes 
+			   para cada classificação podem ser acessadas no seguinte link: 
+			   <a href="https://github.com/vdresch/mapa_violencia_django/blob/main/mapa_violencia/mapa/crimes_list.py" style="text-decoration: none" target="_blank">classificação de crimes</a></p>
+			<br>
+		</div>
+    </div>
+    <script src="script.js"></script>
 	<!-- Map -->
 	<div class="content">
 		<div id="map", style="height: 100%; position: relative; outline-style: none; z-index: 0;"></div>
@@ -395,6 +458,21 @@ $(function() {
 
 	//First update (create map)
 	create_map(["All"], [$('input[name=tipo_crime]:checked', '#form_crimes').val()], new Date('2021.10.01'), new Date('{{ max_date }}'));
+
+</script>
+<!-- Show and hide sobre and map -->
+<script>
+const showButton = document.getElementById('sobre_button');
+const hideButton = document.getElementById('map_button');
+const hiddenDiv = document.getElementById('hiddenDiv');
+
+showButton.addEventListener('click', () => {
+    hiddenDiv.style.display = 'block'; // Show the div
+});
+
+hideButton.addEventListener('click', () => {
+    hiddenDiv.style.display = 'none'; // Hide the div
+});
 
 </script>
 </body>
