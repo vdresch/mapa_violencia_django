@@ -11,6 +11,9 @@
 	<title>MAPA DA VIOLÊNCIA</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
 	<style>
 		/* Basic styles for the layout */
 		body {
@@ -18,6 +21,8 @@
 			padding: 0;
 			display: flex;
 			min-height: 100vh; /* Ensure body covers at least the viewport height */
+			font-family: 'Roboto', sans-serif;
+			font-weight: 300;
 		}
 
 		nav {
@@ -25,6 +30,8 @@
 			color: #fff;
 			flex: 0 0 200px; /* Fixed width for the nav bar */
 			padding: 20px;
+			font-family: 'Roboto', sans-serif;
+			font-weight: 500;
 		}
 
 		main {
@@ -41,12 +48,6 @@
 
 		.content:nth-child(odd) {
 			background-color: #eee;
-		}
-
-		.ads {
-			flex: 0 0 150px; /* Fixed width for ads */
-			background-color: #ccc;
-			padding: 20px;
 		}
 
 		.info {
@@ -206,6 +207,14 @@
 		.link-button:hover {
 			color: rgb(177, 177, 177); /* Change the color on hover to your preferred color */
 		}
+
+		.link-button-container {
+			padding-left: 30px;
+			padding-right: 30px;
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+		}
 		
 	</style>
 </head>
@@ -215,11 +224,11 @@
 <div>
 	<h1 style="text-align: center; font-family: Kazmann Sans; font-size: 78px; ">MAPA DA<br>VIOLÊNCIA</h1>
 </div>
-<!-- Map button -->
-<div>
+<!-- View buttons -->
+<div class="link-button-container">
 	<button id="map_button" class="link-button">Mapa</button>
 	<button id="sobre_button" class="link-button">Sobre</button>
-	<a href="https://github.com/vdresch" class="link-button" style="text-decoration: none" target="_blank">Github</a>
+	<a href="https://github.com/vdresch/mapa_violencia_django" class="link-button" style="text-decoration: none" target="_blank">Github</a>
 </div>
 <!-- Filters -->
 <!-- Date -->
@@ -271,17 +280,15 @@
 	</fieldset>
 	</form>
 </div>
-<!-- Sobre button -->
 </nav>
 <!-- Main content -->
 <main>
 	<!-- Sobre -->
 	<div id="hiddenDiv" class="hidden" style="height: 100%; position: relative; outline-style: none; z-index: 0;">
         <div class="content">
-			<h4>Sobre o projeto</h4>
-			<p>Donec fringilla, orci vel eleifend dignissim, lorem mi aliquet nunc, eget euismod magna sapien nec nisi. Vestibulum facilisis erat a elit consequat semper. </p>
+			<h2 style="font-family: Kazmann Sans; font-weight: bold; font-size: 50px;">Sobre o projeto</h2>
 			<br>
-			<h4>Base de dados</h4>
+			<h4 style="font-family: Kazmann Sans; font-weight: bold;  font-size: 36px;">Base de dados</h4>
 			<p>De acordo com a Lei nº 15.610 de 29 de abril de 2021, a Secretária de Segurança Pública do Rio Grande do Sul publica mensalmente 
 			   uma base com todos os registros de crimes nos estado. Essa base contém uma linha para cada crime registrado, com dados de data, 
 			   tipo de ocorrência e local do evento. Todas as informações referentes a crimes vêm 
@@ -292,7 +299,7 @@
 				cálculos de criminalidade per capita.
 			</p>
 			<br>
-			<h4>Processamento</h4>
+			<h4 style="font-family: Kazmann Sans; font-weight: bold; font-size: 36px;">Processamento</h4>
 			<p>O processo de processamento da base é bastante simples, e se trata apenas de uma limpeza da base e um merge com os dados geográficos
 				e populacionais. </p>
 			<p>A limpeza da base consiste em, primeiro, filtrar apenas eventos ocorridos em Porto Alegre, e segundo, corrigir problemas
@@ -303,7 +310,7 @@
 				<a href="https://github.com/vdresch/mapa_violencia_django/blob/main/mapa_violencia/scripts/process_data.py" style="text-decoration: none" target="_blank">nesse link.</a>
 			</p>
 			<br>
-			<h4>Crimes violentos e não violentos</h4>
+			<h4 style="font-family: Kazmann Sans; font-weight: bold; font-size: 36px;">Crimes violentos e não violentos</h4>
 			<p>A definição do que constitui um crime violento e um crime não violento foi feita de forma arbitrária e não técnica. 
 			   Como o processo foi efetuado de forma manual, também é possível erros humanos na classificação. A lista de crimes 
 			   para cada classificação podem ser acessadas no seguinte link: 
@@ -311,7 +318,6 @@
 			<br>
 		</div>
     </div>
-    <script src="script.js"></script>
 	<!-- Map -->
 	<div class="content">
 		<div id="map", style="height: 100%; position: relative; outline-style: none; z-index: 0;"></div>

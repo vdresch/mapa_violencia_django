@@ -2,10 +2,11 @@
 Mapa da violência em Django
 
 ### TODO to deploy
-- sobre
-- sobre mobile
-- github link
+- favicon
 - readme
+- requirements.txt
+- css to separate file
+- clean and document code
 - domain
 - deploy
 
@@ -14,5 +15,3 @@ Mapa da violência em Django
 - ranking of crimes
 - change datepicker min date mobile (so it does not go below oct 2021)
 - filter by weekday and time
-- css to separate file
-- clean and document code

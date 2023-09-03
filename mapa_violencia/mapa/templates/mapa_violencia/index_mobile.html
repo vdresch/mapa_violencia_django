@@ -12,6 +12,9 @@
 	<title>MAPA DA VIOLÊNCIA</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
 	<style>
 		/* Basic styles for the layout */
 		body {
@@ -20,6 +23,8 @@
 			display: flex;
 			flex-direction: column;
 			height: 100vh;
+			font-family: 'Roboto', sans-serif;
+			font-weight: 300;
 		}
 
 		main {
@@ -60,20 +65,18 @@
 			overflow-x: hidden; /* Disable horizontal scroll */
 			padding-top: 60px; /* Place content 60px from the top */
 			transition: 0.3s; /* 0.5 second transition effect to slide in the sidebar */
+			font-family: 'Roboto', sans-serif;
+			font-weight: 500;
 		}
 
-		/* The sidebar links */
-		.sidebar a {
+		/* Position and style the close button (top right corner) */
+		.sidebar .closebtn {
 			padding: 8px 8px 8px 32px;
 			text-decoration: none;
 			font-size: 25px;
 			color: #eee;
 			display: block;
 			transition: 0.3s;
-		}
-
-		/* Position and style the close button (top right corner) */
-		.sidebar .closebtn {
 			position: absolute;
 			top: 0;
 			right: 25px;
@@ -87,7 +90,7 @@
 			align-items: center;
 			position: relative;
 			background-color: #111;
-			height: 7%;
+			height: 80px; /* Adjust the height to your preference */
 			color: #fff;
 			text-align: center;
 		}
@@ -149,6 +152,31 @@
 			src: url("{% static 'fonts/KazmannSans.ttf' %}") format("truetype");
 		}
 
+		.hidden {
+			display: none;
+		}
+
+		.link-button {
+			background: none;
+			border: none;
+			font-size: 36px !important;
+			font-family: Kazmann Sans;
+			font-weight: bold;
+			color: inherit;
+			cursor: pointer;
+			transition: color 0.3s;
+		}
+
+		.link-button-container {
+			display: flex;
+			flex: 1;
+			text-align: center;
+			justify-content: space-evenly;
+			align-items: center;
+			padding-left: 30px;
+			padding-right: 30px;
+		}
+
 	</style>
 </head>
 <body>
@@ -159,6 +187,12 @@
 		<h1 style="text-align: center; font-family: Kazmann Sans; font-size: 50px;">MAPA DA<br>VIOLÊNCIA</h1>
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	</div>
+	<!-- View buttons -->
+	<div class="link-button-container">
+		<button id="map_button" class="link-button" onclick="closeNav()">Mapa</button>
+		<button id="sobre_button" class="link-button" onclick="closeNav()">Sobre</button>
+		<a href="https://github.com/vdresch/mapa_violencia_django" class="link-button" style="text-decoration: none" target="_blank">Github</a>
+	</div>
 	<!-- Date filter -->
 	<div date-rangepicker style="padding-top: 6%;display: flex; justify-content: center; align-items: center; width: 100%;">
 		<div class="relative">		  
@@ -168,7 +202,7 @@
 		<div class="relative">
 			<input type="text" class="date_box" id="date2">
 		</div>
-	  </div>
+	</div>
 	<!-- Crimes fiter -->
 	<div style="padding-top: 6%; padding-left: 7%;">
 		<form id="form_crimes">
@@ -214,8 +248,43 @@
 	<!-- Menu -->
 	<div class="top-bar">
 		<button class="menu-button" onclick="openNav()">&#9776;</button>
-		<h1 class="title" style="font-family: Kazmann Sans;">MAPA DA VIOLÊNCIA</h1>
+		<h1 class="title" style="font-family: Kazmann Sans; font-size: 38px;">MAPA DA VIOLÊNCIA</h1>
 	</div>
+	<!-- Sobre -->
+	<div id="hiddenDiv" class="hidden" style="height: 100%; position: relative; outline-style: none; z-index: 0;">
+        <div class="content">
+			<h2 style="font-family: Kazmann Sans; font-weight: bold; font-size: 50px;">Sobre o projeto</h2>
+			<br>
+			<h4 style="font-family: Kazmann Sans; font-weight: bold;  font-size: 36px;">Base de dados</h4>
+			<p>De acordo com a Lei nº 15.610 de 29 de abril de 2021, a Secretária de Segurança Pública do Rio Grande do Sul publica mensalmente 
+			   uma base com todos os registros de crimes nos estado. Essa base contém uma linha para cada crime registrado, com dados de data, 
+			   tipo de ocorrência e local do evento. Todas as informações referentes a crimes vêm 
+			   <a href="https://ssp.rs.gov.br/dados-abertos" style="text-decoration: none" target="_blank">dessa base.</a></p>
+			<p>Os limites geográficos dos bairros são fornecidos pela <a href="http://observapoa.com.br/default.php?reg=259&p_secao=46" style="text-decoration: none" target="_blank">Prefeitura de Porto Alegre.</a> 
+				Os dados populacionais são retirados do <a href="https://pt.wikipedia.org/wiki/Lista_de_bairros_de_Porto_Alegre" style="text-decoration: none" target="_blank">Wikipedia</a> e são referentes ao Censo de 2010.
+				Como existem bairros que foram criados após o Censo, esses bairros não possuem dados populacionais. Dessa forma, não é possível fazer os
+				cálculos de criminalidade per capita.
+			</p>
+			<br>
+			<h4 style="font-family: Kazmann Sans; font-weight: bold; font-size: 36px;">Processamento</h4>
+			<p>O processo de processamento da base é bastante simples, e se trata apenas de uma limpeza da base e um merge com os dados geográficos
+				e populacionais. </p>
+			<p>A limpeza da base consiste em, primeiro, filtrar apenas eventos ocorridos em Porto Alegre, e segundo, corrigir problemas
+				de nomenclatura de bairros. Como o bairro da ocorrência é de preenchimento manual pela vítima, o passo de corrigir a nomenclatura é necessário. 
+				A correção da nomenclatura ocorre através da alteração de algumas abreviaturas (sta para Santa e vl para Vila), alteração de alguns nomes populares 
+				para o nome oficial (Protásio Alves para Morro Santana, Centro e Cais do Porto para Centro Histórico, Intercap para Partenon), e por fim é utilizado 
+				o algoritmo get_close_matches() do difflib para corrigir pequenos problemas gramaticais. O processo é open source e pode ser acessado 
+				<a href="https://github.com/vdresch/mapa_violencia_django/blob/main/mapa_violencia/scripts/process_data.py" style="text-decoration: none" target="_blank">nesse link.</a>
+			</p>
+			<br>
+			<h4 style="font-family: Kazmann Sans; font-weight: bold; font-size: 36px;">Crimes violentos e não violentos</h4>
+			<p>A definição do que constitui um crime violento e um crime não violento foi feita de forma arbitrária e não técnica. 
+			   Como o processo foi efetuado de forma manual, também é possível erros humanos na classificação. A lista de crimes 
+			   para cada classificação podem ser acessadas no seguinte link: 
+			   <a href="https://github.com/vdresch/mapa_violencia_django/blob/main/mapa_violencia/mapa/crimes_list.py" style="text-decoration: none" target="_blank">classificação de crimes</a></p>
+			<br>
+		</div>
+    </div>
 	<!-- Map -->
 	<div class="content">
 		<div id="map" style="height: 100%;"></div>
@@ -404,6 +473,21 @@ function openNav() {
 function closeNav() {
 	document.getElementById("mySidebar").style.width = "0";
   }
+</script>
+<!-- Show and hide sobre and map -->
+<script>
+	const showButton = document.getElementById('sobre_button');
+	const hideButton = document.getElementById('map_button');
+	const hiddenDiv = document.getElementById('hiddenDiv');
+	
+	showButton.addEventListener('click', () => {
+		hiddenDiv.style.display = 'block'; // Show the div
+	});
+	
+	hideButton.addEventListener('click', () => {
+		hiddenDiv.style.display = 'none'; // Hide the div
+	});
+	
 </script>
 </body>
 </html>
