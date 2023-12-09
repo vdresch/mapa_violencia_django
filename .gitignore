@@ -1,7 +1,6 @@
 *.ipynb
 *.pyc
 mapa_violencia/scripts/data
-mapa_violencia/resources/shapesbairros2016
 mapa_violencia/db.sqlite3
 mapa_violencia/mapa/migrations
 .DS_Store

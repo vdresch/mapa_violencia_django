@@ -1,5 +1,10 @@
 ######################################################################################################
 #
+#   Code should be run by Django before starting the server with the following command:
+#   python manage.py runscript process_data
+#
+#   This code should be updates every year because of the new files.
+#
 #   The objective of this code is to clean the data provided by Secretaria da Segurança
 #   Pública. The neighborhoods will be cleaned and the output is a CSV that can be used by Tableau.
 #   There will be aldo a CSV with metadata about the neighborhoods.
