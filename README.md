@@ -1,4 +1,4 @@
-# Mapa da violência em Django
+# Mapa da violência Porto Alegre
 
 ### About
 This code runs a website with a fully custom dashboard with relevant statistics about crime in the city of Porto Alegre. The map will show the stats for evey neighborhood. There is also filters for dates and specific crimes. With this tool, you will be able to have a better understanding of the safety situation in Porto Alegre and it's neighborhoods, as well to make decisions based on it.
@@ -36,7 +36,6 @@ Database cleaning consists of first filtering only events that occurred in Porto
 The definition of what constitutes a violent crime and a non-violent crime was arbitrary and non-technical. Since the process was carried out manually, there may also be human errors in classification. The list of crimes for each classification can be accessed at the following link: [crime classification](https://github.com/vdresch/mapa_violencia_django/blob/main/mapa_violencia/mapa/crimes_list.py).
 
 ### TODO to deploy
-- favicon
 - css to separate file
 - clean and document code
 - domain
