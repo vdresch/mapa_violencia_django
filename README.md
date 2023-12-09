@@ -3,7 +3,7 @@
 ### About
 This code runs a website with a fully custom dashboard with relevant statistics about crime in the city of Porto Alegre. The map will show the stats for evey neighborhood. There is also filters for dates and specific crimes. With this tool, you will be able to have a better understanding of the safety situation in Porto Alegre and it's neighborhoods, as well to make decisions based on it.
 
-![Website](https://github.com/vdresch/mapa_violencia_django/map_example.png)
+![Website](https://github.com/vdresch/mapa_violencia_django/blob/main/map_example.png)
 
 ### How to run
 There are only three things needed to run this project:
